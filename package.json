@@ -1,0 +1,52 @@
+{
+	"name": "arc",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"test": "npm run test:integration && npm run test:unit",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write .",
+		"test:integration": "playwright test",
+		"test:unit": "vitest"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.28.1",
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-vercel": "^3.0.3",
+		"@sveltejs/kit": "^1.20.4",
+		"@tsconfig/svelte": "^5.0.2",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"@typescript-eslint/parser": "^5.45.0",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte": "^2.30.0",
+		"i": "^0.3.7",
+		"npm": "^9.8.1",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.10.1",
+		"svelte": "^4.0.5",
+		"svelte-check": "^3.5.1",
+		"svelte-preprocess": "^5.0.4",
+		"tslib": "^2.4.1",
+		"typescript": "^5.2.2",
+		"vite": "^4.4.2",
+		"vitest": "^0.32.2"
+	},
+	"type": "module",
+	"dependencies": {
+		"@carbon/charts-svelte": "^1.11.21",
+		"@carbon/styles": "^1.36.0",
+		"@simplewebauthn/browser": "^9.0.1",
+		"@vercel/speed-insights": "^1.0.2",
+		"bcryptjs": "^2.4.3",
+		"mongodb": "^5.8.1",
+		"mqtt": "^5.1.4",
+		"uuid": "^9.0.1",
+		"zlib": "^1.0.5"
+	}
+}

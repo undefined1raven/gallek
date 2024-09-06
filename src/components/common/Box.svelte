@@ -4,7 +4,6 @@
 	import { fly, fade, scale } from 'svelte/transition';
 	import screenSize from '../../stores/screenSize';
 	import globalStyle from '../../stores/globalStyles';
-	import toolTipState from '../../stores/toolTipState';
 	import readTransitions from '../../fn/readTransitions';
 	import { onMount } from 'svelte';
 	let lglobalStyle = $globalStyle;
@@ -92,7 +91,6 @@
 		}}
 		on:mouseenter={() => {
 			if (toolTipText !== undefined && toolTipText !== '') {
-				toolTipState.set({ text: toolTipText, show: true });
 			}
 			if (mouseEnter !== undefined) {
 				mouseEnter.call();
@@ -106,7 +104,6 @@
 		}}
 		on:mouseleave={() => {
 			if (toolTipText !== undefined && toolTipText !== '') {
-				toolTipState.set({ text: toolTipText, show: false });
 			}
 			if (mouseLeave !== undefined) {
 				mouseLeave.call();

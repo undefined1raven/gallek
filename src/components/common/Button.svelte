@@ -6,8 +6,6 @@
 	import globalStyle from '../../stores/globalStyles';
 	import getFigmaImportConfig from '../../config/FigmaImportConfig';
 	import readTransitions from '../../fn/readTransitions';
-	import toolTipState from '../../stores/toolTipState';
-	let lglobalStyles = $globalStyle;
 	const dispatch = createEventDispatcher();
 	let id;
 	let label;
@@ -73,9 +71,6 @@
 	onMount(() => {
 		rendered = true;
 		fontController();
-	});
-	globalStyle.subscribe((gs) => {
-		lglobalStyles = gs;
 	});
 	function onResize(e) {
 		clientHeight = root.clientHeight;
@@ -174,7 +169,6 @@
 		on:click={onClick}
 		on:mouseenter={() => {
 			if (toolTipText !== undefined && toolTipText !== '') {
-				toolTipState.set({ text: toolTipText, show: true });
 			}
 			if (mouseEnter !== undefined) {
 				mouseEnter.call();
@@ -183,7 +177,6 @@
 		}}
 		on:mouseleave={() => {
 			if (toolTipText !== undefined && toolTipText !== '') {
-				toolTipState.set({ text: toolTipText, show: false });
 			}
 			if (mouseLeave !== undefined) {
 				mouseLeave.call();

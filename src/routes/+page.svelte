@@ -4,6 +4,8 @@
 	import Input from '../components/common/Input.svelte';
 	import Label from '../components/common/Label.svelte';
 	import Logo from '../components/deco/Logo.svelte';
+	import domainGetter from '../fn/domainGetter';
+	import { passkeySetup } from '../fn/passkeySetup';
 	import globalStyle from '../stores/globalStyles';
 
 	let globalStyleActual = {};
@@ -19,7 +21,10 @@
 	borderColor={globalStyleActual.activeColor}
 />
 <Button
-	verticalFont={'17px'}
+	onClick={() => {
+		passkeySetup();
+	}}
+	verticalFont={'15px'}
 	label="Continue"
 	figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}
 />
@@ -32,7 +37,7 @@
 	figmaImport={{ mobile: { top: 604, left: 32 } }}
 />
 <Button
-	verticalFont={'17px'}
+	verticalFont={'15px'}
 	label="Sign In"
 	figmaImport={{ mobile: { top: 639, left: 32, width: 366, height: 45 } }}
 />

@@ -21,12 +21,17 @@ async function isPasskeySupported() {
 	}
 }
 
-async function passkeySetup() {
-	// const hasPasskeySupport = await isPasskeySupported();
-	// console.log(hasPasskeySupport);
+async function passkeySetup(additionalBody, onSuccess, onError) {
+	if (additionalBody === undefined || onSuccess === undefined || onError === undefined) return;
+	const hasPasskeySupport = await isPasskeySupported();
+	console.log(hasPasskeySupport);
 	let regResponse;
 	let response = await (
-		await fetch(domainGetter('/auth/authnRegisterStart'), { credentials: 'include' })
+		await fetch(domainGetter('/auth/authnRegisterStart'), {
+			credentials: 'include',
+			method: 'POST',
+			body: JSON.stringify({ ...additionalBody })
+		})
 	).json();
 	if (
 		response.error === undefined &&
@@ -41,9 +46,14 @@ async function passkeySetup() {
 		})
 			.then(async (res) => {
 				let resx = await res.json();
-				console.log(resx);
+				if (resx.status === 'Failed') {
+					onError.apply(null, []);
+				} else {
+					onSuccess.apply(null, []);
+				}
 			})
 			.catch((e) => {
+				onError.apply(null, [e]);
 				console.log(e);
 			});
 	}

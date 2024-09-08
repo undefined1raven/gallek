@@ -189,8 +189,6 @@
 		autofocus={isMobile() ? false : autofocus}
 		type="text"
 		{id}
-		on:touchstart={onTouchStart}
-		on:touchend={onTouchEnd}
 		on:click={onClick}
 		on:mouseenter={() => (isMouseHovering = true)}
 		on:mouseleave={() => (isMouseHovering = false)}

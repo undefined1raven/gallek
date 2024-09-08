@@ -59,28 +59,46 @@ async function passkeySetup(additionalBody, onSuccess, onError) {
 	}
 }
 
-async function passkeyAuth() {
+async function passkeyAuth(additionalBody, onError, onSuccess, onWaitingKey, onKeyFailed, onKeySuccess) {
+	if (additionalBody === undefined) return;
 	let response = await (
-		await fetch(domainGetter('/auth/authnAuthenticationStart'), { credentials: 'include' })
+		await fetch(domainGetter('/auth/authnAuthenticationStart'), {
+			credentials: 'include',
+			method: 'POST',
+			body: JSON.stringify({ ...additionalBody })
+		})
 	).json();
 	if (
 		response.error === undefined &&
 		response.opts !== undefined &&
 		response.regsID !== undefined
 	) {
-		let authResponse = await startAuthentication(response.opts);
-		fetch(domainGetter('/auth/authnAuthenticationVerify'), {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify({ regs: authResponse, regsID: response.regsID })
-		})
-			.then(async (res) => {
-				let resx = await res.json();
-				console.log(resx);
+		onWaitingKey.apply(null, []);
+		try {
+			let authResponse = await startAuthentication(response.opts);
+			fetch(domainGetter('/auth/authnAuthenticationVerify'), {
+				method: 'POST',
+				credentials: 'include',
+				body: JSON.stringify({ regs: authResponse, regsID: response.regsID })
 			})
-			.catch((e) => {
-				console.log(e);
-			});
+				.then(async (res) => {
+					let resx = await res.json();
+					if (resx.status === 'Failed') {
+						onError.apply(null, []);
+					} else {
+						onKeySuccess.apply(null, []);
+					}
+				})
+				.catch((e) => {
+					onError.apply(null, [e]);
+					console.log(e);
+				});
+		} catch (e) {
+			onKeyFailed.apply(null, [e]);
+		}
+
+	} else {
+		onError.apply(null, []);
 	}
 }
 

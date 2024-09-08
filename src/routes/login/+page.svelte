@@ -12,6 +12,7 @@
 	import globalStyle from '../../stores/globalStyles';
 	import isLoggedIn from '../../stores/auth';
 	import { onMount } from 'svelte';
+	import Auth from './Auth.svelte';
 	let phrase = '';
 	let globalStyleActual = {};
 	$: validPhrase = phrase.length > 6 && phrase.length <= 50;
@@ -57,161 +58,176 @@
 				setLoadingIndicator($globalStyle.errorColor, 500);
 			});
 	});
+
+	$: authMode = false;
 </script>
 
-<Label verticalFont={'20px'} text="Sign up" figmaImport={{ mobile: { top: 327, left: 32 } }} />
-<Box figmaImport={{ mobile: { top: 73, left: 127, width: 175, height: 175 } }}>
-	<Logo width="100%" height="100%" />
-</Box>
-{#if hasValidPhrase === true}
-	<Label
-		transitions={getTransition(1)}
-		verticalFont={'15px'}
-		text="Enter phrase"
-		figmaImport={{ mobile: { top: 380, left: 32 } }}
-	/>
-	<Box
-		transitions={getTransition(2)}
-		figmaImport={{ mobile: { top: 410, left: 32, width: 366, height: 45 } }}
-	>
-		<Input
-			readonly={isCheckingPhrase}
-			width="100%"
-			height="100%"
-			hoverOpacityMax={isCheckingPhrase ? 20 : 30}
-			hoverOpacityMin={isCheckingPhrase ? 20 : 10}
-			bind:value={phrase}
-			verticalFont={'17px'}
-			paddingLeft="0.5%"
-			borderColor={!isCheckingPhrase ? $globalStyle.activeColor : '#00000000'}
-		/>
+{#if authMode === false}
+	<Label verticalFont={'20px'} text="Sign up" figmaImport={{ mobile: { top: 327, left: 32 } }} />
+	<Box figmaImport={{ mobile: { top: 73, left: 127, width: 175, height: 175 } }}>
+		<Logo width="100%" height="100%" />
 	</Box>
-	{#if isCheckingPhrase}
-		<Box figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}>
-			<NetworkDeco color={loadingIndicatorColor} height="50%" blinking={true} />
-		</Box>
-	{:else}
-		<Button
-			transitions={{ ...getTransition(3) }}
-			color={validPhrase ? $globalStyle.activeMono : $globalStyle.inactiveMono}
-			backgroundColor={validPhrase ? $globalStyle.activeColor : $globalStyle.inactiveMono}
-			borderColor={validPhrase ? $globalStyle.activeColor : $globalStyle.inactiveMono}
-			hoverOpacityMin={0}
-			onClick={() => {
-				isCheckingPhrase = true;
-				fetch(domainGetter('/auth/verify'), {
-					method: 'post',
-					body: JSON.stringify({ phrase }),
-					credentials: 'include'
-				})
-					.then((res) => {
-						res.json().then((r) => {
-							if (r.success) {
-								setLoadingIndicator($globalStyle.successColor, 500);
-								hasValidPhrase = true;
-							} else {
-								setLoadingIndicator($globalStyle.errorColor, 500);
-							}
-						});
-					})
-					.catch((e) => {
-						setLoadingIndicator($globalStyle.errorColor, 500);
-					});
-			}}
+	{#if hasValidPhrase === false}
+		<Label
+			transitions={getTransition(1)}
 			verticalFont={'15px'}
-			label="Continue"
-			figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}
+			text="Enter phrase"
+			figmaImport={{ mobile: { top: 380, left: 32 } }}
 		/>
-	{/if}
-
-	<Label
-		transitions={getDownTransition(2)}
-		verticalFont={'15px'}
-		text="Already have an account?"
-		figmaImport={{ mobile: { top: 604, left: 32 } }}
-	/>
-	<Button
-		transitions={getDownTransition(1)}
-		verticalFont={'15px'}
-		label="Sign In"
-		figmaImport={{ mobile: { top: 639, left: 32, width: 366, height: 45 } }}
-	/>
-{:else}
-	<Label
-		transitions={getTransition(1)}
-		verticalFont={'15px'}
-		text="Choose a display name"
-		figmaImport={{ mobile: { top: 380, left: 32 } }}
-	/>
-	<Box
-		transitions={getTransition(2)}
-		figmaImport={{ mobile: { top: 410, left: 32, width: 366, height: 45 } }}
-	>
-		<Input
-			readonly={isCheckingPhrase}
-			width="100%"
-			placeholder="Display name"
-			height="100%"
-			bind:value={displayName}
-			on:onValue={(e) => {
-				const newInput = e.detail;
-				if (newInput < 20) {
-					displayName = e.detail;
-				} else {
-					displayName = displayName.slice(0, 20);
-				}
-			}}
-			backdropFilter="blur(2px)"
-			hoverOpacityMax={isCheckingPhrase ? 20 : 30}
-			hoverOpacityMin={isCheckingPhrase ? 20 : 10}
-			verticalFont={'17px'}
-			paddingLeft="0.5%"
-			borderColor={!isCheckingPhrase ? $globalStyle.activeColor : '#00000000'}
-		/>
-	</Box>
-	{#if isCheckingPhrase === true}
-		{#if registrationSuccess === false}
+		<Box
+			transitions={getTransition(2)}
+			figmaImport={{ mobile: { top: 410, left: 32, width: 366, height: 45 } }}
+		>
+			<Input
+				readonly={isCheckingPhrase}
+				width="100%"
+				height="100%"
+				hoverOpacityMax={isCheckingPhrase ? 20 : 30}
+				hoverOpacityMin={isCheckingPhrase ? 20 : 10}
+				bind:value={phrase}
+				verticalFont={'17px'}
+				paddingLeft="0.5%"
+				borderColor={!isCheckingPhrase ? $globalStyle.activeColor : '#00000000'}
+			/>
+		</Box>
+		{#if isCheckingPhrase}
 			<Box figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}>
 				<NetworkDeco color={loadingIndicatorColor} height="50%" blinking={true} />
 			</Box>
 		{:else}
-			<Label
-				transitions={{ ...getTransition(1) }}
-				color={$globalStyle.successColor}
-				backgroundColor={$globalStyle.successColor + '20'}
+			<Button
+				transitions={{ ...getTransition(3) }}
+				color={validPhrase ? $globalStyle.activeMono : $globalStyle.inactiveMono}
+				backgroundColor={validPhrase ? $globalStyle.activeColor : $globalStyle.inactiveMono}
+				borderColor={validPhrase ? $globalStyle.activeColor : $globalStyle.inactiveMono}
+				hoverOpacityMin={0}
+				hoverOpacityMax={!validPhrase ? 0 : 20}
+				onClick={() => {
+					if (phrase.length > 50 || !validPhrase) return;
+					isCheckingPhrase = true;
+					fetch(domainGetter('/auth/verify'), {
+						method: 'post',
+						body: JSON.stringify({ phrase }),
+						credentials: 'include'
+					})
+						.then((res) => {
+							res.json().then((r) => {
+								if (r.success) {
+									setLoadingIndicator($globalStyle.successColor, 500);
+									hasValidPhrase = true;
+								} else {
+									setLoadingIndicator($globalStyle.errorColor, 500);
+								}
+							});
+						})
+						.catch((e) => {
+							setLoadingIndicator($globalStyle.errorColor, 500);
+						});
+				}}
 				verticalFont={'15px'}
-				align="left"
-				backdropFilter="blur(2px)"
-				alignPadding="2%"
-				text="Key registered"
-				figmaImport={{ mobile: { top: 485, left: 32, width: 359, height: 45 } }}
+				label="Continue"
+				figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}
 			/>
 		{/if}
-	{:else}
-		<Button
-			transitions={{ ...getTransition(3) }}
-			color={isDisplayNameValid ? $globalStyle.activeMono : $globalStyle.inactiveMono}
-			backgroundColor={isDisplayNameValid ? $globalStyle.activeColor : $globalStyle.inactiveMono}
-			borderColor={isDisplayNameValid ? $globalStyle.activeColor : $globalStyle.inactiveMono}
-			hoverOpacityMin={0}
-			onClick={() => {
-				isCheckingPhrase = true;
-				if (phrase.length > 50) return;
-				passkeySetup(
-					{ displayName, phrase },
-					() => {
-						isLoggedIn.set(true);
-						registrationSuccess = true;
-						setLoadingIndicator($globalStyle.successColor, 500, '/account');
-					},
-					() => {
-						setLoadingIndicator($globalStyle.errorColor, 500);
-					}
-				);
-			}}
+
+		<Label
+			transitions={getDownTransition(2)}
 			verticalFont={'15px'}
-			label="Continue"
-			figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}
+			text="Already have an account?"
+			figmaImport={{ mobile: { top: 604, left: 32 } }}
 		/>
+		<Button
+			onClick={() => {
+				authMode = true;
+			}}
+			transitions={getDownTransition(1)}
+			verticalFont={'15px'}
+			label="Log In"
+			figmaImport={{ mobile: { top: 639, left: 32, width: 366, height: 45 } }}
+		/>
+	{:else}
+		<Label
+			transitions={getTransition(1)}
+			verticalFont={'15px'}
+			text="Choose a display name"
+			figmaImport={{ mobile: { top: 380, left: 32 } }}
+		/>
+		<Box
+			transitions={getTransition(2)}
+			figmaImport={{ mobile: { top: 410, left: 32, width: 366, height: 45 } }}
+		>
+			<Input
+				readonly={isCheckingPhrase}
+				width="100%"
+				placeholder="Display name"
+				height="100%"
+				bind:value={displayName}
+				on:onValue={(e) => {
+					const newInput = e.detail;
+					if (newInput < 20) {
+						displayName = e.detail;
+					} else {
+						displayName = displayName.slice(0, 20);
+					}
+				}}
+				backdropFilter="blur(2px)"
+				hoverOpacityMax={isCheckingPhrase ? 20 : 30}
+				hoverOpacityMin={isCheckingPhrase ? 20 : 10}
+				verticalFont={'17px'}
+				paddingLeft="0.5%"
+				borderColor={!isCheckingPhrase ? $globalStyle.activeColor : '#00000000'}
+			/>
+		</Box>
+		{#if isCheckingPhrase === true}
+			{#if registrationSuccess === false}
+				<Box figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}>
+					<NetworkDeco color={loadingIndicatorColor} height="50%" blinking={true} />
+				</Box>
+			{:else}
+				<Label
+					transitions={{ ...getTransition(1) }}
+					color={$globalStyle.successColor}
+					backgroundColor={$globalStyle.successColor + '20'}
+					verticalFont={'15px'}
+					align="left"
+					backdropFilter="blur(2px)"
+					alignPadding="2%"
+					text="Key registered"
+					figmaImport={{ mobile: { top: 485, left: 32, width: 359, height: 45 } }}
+				/>
+			{/if}
+		{:else}
+			<Button
+				transitions={{ ...getTransition(3) }}
+				color={isDisplayNameValid ? $globalStyle.activeMono : $globalStyle.inactiveMono}
+				backgroundColor={isDisplayNameValid ? $globalStyle.activeColor : $globalStyle.inactiveMono}
+				borderColor={isDisplayNameValid ? $globalStyle.activeColor : $globalStyle.inactiveMono}
+				hoverOpacityMin={0}
+				onClick={() => {
+					if (phrase.length > 50 || !isDisplayNameValid) return;
+					isCheckingPhrase = true;
+					passkeySetup(
+						{ displayName, phrase },
+						() => {
+							isLoggedIn.set(true);
+							registrationSuccess = true;
+							setLoadingIndicator($globalStyle.successColor, 500, '/account');
+						},
+						() => {
+							setLoadingIndicator($globalStyle.errorColor, 500);
+						}
+					);
+				}}
+				verticalFont={'15px'}
+				label="Continue"
+				figmaImport={{ mobile: { top: 485, left: 32, width: 366, height: 45 } }}
+			/>
+		{/if}
 	{/if}
+{:else}
+	<Auth
+		on:changePage={(e) => {
+			authMode = false;
+		}}
+	/>
 {/if}

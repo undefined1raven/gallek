@@ -6,19 +6,40 @@
 	import { getTransition } from '../../fn/getTransisitions';
 	import FileDeco from '../../components/deco/FileDeco.svelte';
 	import domainGetter from '../../fn/domainGetter';
+	import { createClient } from '@supabase/supabase-js';
 	let fileInput;
+	const client = createClient(
+		'https://wrbgbsulbyytggffcavl.supabase.co/', ///safe. its read only on purpose
+		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYmdic3VsYnl5dGdnZmZjYXZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU3ODc2ODcsImV4cCI6MjA0MTM2MzY4N30.Z8-mJtHO1aS4tm9EScbIkQape1zXa0ycC_dZc86nXfg'
+	);
+
 	onMount(() => {
 		setTimeout(() => {
 			const reader = new FileReader();
 			fileInput.addEventListener('change', (e) => {
 				const fileList = e.target.files;
 				reader.readAsDataURL(fileList[0]);
+				const fileName = fileList[0].name;
+				const fileExtension = fileName.split('.').pop();
 				reader.addEventListener('load', (ex) => {
-					const data = ex.target.result;
 					fetch(domainGetter('/fileOps/upload'), {
 						method: 'post',
 						credentials: 'include',
-						body: JSON.stringify({ data })
+						body: JSON.stringify({ ext: fileExtension })
+					}).then(async (r) => {
+						const dataRes = await r.json();
+						const data = dataRes.data.data;
+						if (dataRes.status === 'success') {
+							client.storage
+								.from('gallek-collection')
+								.uploadToSignedUrl(data.path, data.token, fileList[0])
+								.then((r) => {
+									console.log(r);
+								})
+								.catch((e) => {
+									console.log(e);
+								});
+						}
 					});
 				});
 			});

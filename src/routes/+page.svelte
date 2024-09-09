@@ -6,7 +6,7 @@
 	$: blobs = [];
 	onMount(() => {
 		const client = createClient(
-			'https://wrbgbsulbyytggffcavl.supabase.co/',///safe. its read only on purpose
+			'https://wrbgbsulbyytggffcavl.supabase.co/', ///safe. its read only on purpose
 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYmdic3VsYnl5dGdnZmZjYXZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU3ODc2ODcsImV4cCI6MjA0MTM2MzY4N30.Z8-mJtHO1aS4tm9EScbIkQape1zXa0ycC_dZc86nXfg'
 		);
 		client.storage
@@ -18,15 +18,14 @@
 						.from('gallek-collection')
 						.download(r.data[ix].name)
 						.then((res) => {
-							if (res.data === undefined) return;
-                            const blob = res.data;
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                                const base64String = reader.result.split(',')[1];
-                                const blobWithType = new Blob([base64String], { type: 'image/png' });
-                            };
-                            reader.readAsDataURL(blob);
-                        })
+							const blob = res.data;
+							const reader = new FileReader();
+							reader.onloadend = () => {
+								const base64Data = reader.result;
+								blobs = [...blobs, base64Data];
+							};
+							reader.readAsDataURL(blob);
+						})
 						.catch((e) => {
 							console.log(e);
 						});
@@ -38,8 +37,8 @@
 	});
 </script>
 
-{#each blobs as blob}
-	<Box width="50vh" backgroundColor="#000" height="50vh">
-		<img src={blob} style="height: 100%; width: 100%" alt="hii"/>
+{#each blobs as blob, idx}
+	<Box width="15vh" backgroundColor="#000" height="15vh" left={5 * idx + '%'}>
+		<img src={blob} style="height: 100%; width: 100%" alt="hii" />
 	</Box>
 {/each}

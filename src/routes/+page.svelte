@@ -2,6 +2,7 @@
 	import { createClient } from '@supabase/supabase-js';
 	import { onMount } from 'svelte';
 	import Box from '../components/common/Box.svelte';
+	import isMobile from '../fn/isMobile';
 
 	$: blobs = [];
 	onMount(() => {
@@ -37,8 +38,29 @@
 	});
 </script>
 
-{#each blobs as blob, idx}
-	<Box width="15vh" backgroundColor="#000" height="15vh" left={5 * idx + '%'}>
-		<img src={blob} style="height: 100%; width: 100%" alt="hii" />
+{#if isMobile()}
+	{#each blobs as blob, idx}
+		<Box width="15vh" backgroundColor="#000" height="15vh" left={5 * idx + '%'}>
+			<img src={blob} style="height: 100%; width: 100%" alt="hii" />
+		</Box>
+	{/each}
+{:else}
+	<Box figmaImport={{ desktop: { top: 110, left: 112, width: 1696, height: 951 } }}>
+		<div
+			style="display: grid;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+				grid-template-columns: repeat(3, 1fr);
+				grid-gap: 1rem;
+				height: 5vw;"
+			class="grid"
+		>
+			{#each blobs as blob, idx}
+				<Box style="position: relative;" width="2vw" backgroundColor="#000000" height="5vw">
+					<img src={blob} style="height: 100%; width: auto;" alt="hii" />
+				</Box>
+			{/each}
+		</div>
 	</Box>
-{/each}
+{/if}

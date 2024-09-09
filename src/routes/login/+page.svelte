@@ -76,6 +76,7 @@
 		/>
 		<Box
 			transitions={getTransition(2)}
+			backdropFilter="blur(10px)"
 			figmaImport={{ mobile: { top: 410, left: 32, width: 366, height: 45 } }}
 		>
 			<Input
@@ -96,11 +97,13 @@
 			</Box>
 		{:else}
 			<Button
+				opacity={validPhrase ? 1 : 0}
 				transitions={{ ...getTransition(3) }}
 				color={validPhrase ? $globalStyle.activeMono : $globalStyle.inactiveMono}
 				backgroundColor={validPhrase ? $globalStyle.activeColor : $globalStyle.inactiveMono}
 				borderColor={validPhrase ? $globalStyle.activeColor : $globalStyle.inactiveMono}
 				hoverOpacityMin={0}
+				backdropFilter="blur(10px)"
 				hoverOpacityMax={!validPhrase ? 0 : 20}
 				onClick={() => {
 					if (phrase.length > 50 || !validPhrase) return;
@@ -142,6 +145,7 @@
 			}}
 			transitions={getDownTransition(1)}
 			verticalFont={'15px'}
+			backdropFilter="blur(10px)"
 			label="Log In"
 			figmaImport={{ mobile: { top: 639, left: 32, width: 366, height: 45 } }}
 		/>
@@ -155,11 +159,11 @@
 		<Box
 			transitions={getTransition(2)}
 			figmaImport={{ mobile: { top: 410, left: 32, width: 366, height: 45 } }}
+			backdropFilter="blur(10px)"
 		>
 			<Input
 				readonly={isCheckingPhrase}
 				width="100%"
-				placeholder="Display name"
 				height="100%"
 				bind:value={displayName}
 				on:onValue={(e) => {
@@ -170,7 +174,6 @@
 						displayName = displayName.slice(0, 20);
 					}
 				}}
-				backdropFilter="blur(2px)"
 				hoverOpacityMax={isCheckingPhrase ? 20 : 30}
 				hoverOpacityMin={isCheckingPhrase ? 20 : 10}
 				verticalFont={'17px'}
@@ -190,7 +193,7 @@
 					backgroundColor={$globalStyle.successColor + '20'}
 					verticalFont={'15px'}
 					align="left"
-					backdropFilter="blur(2px)"
+					backdropFilter="blur(10px)"
 					alignPadding="2%"
 					text="Key registered"
 					figmaImport={{ mobile: { top: 485, left: 32, width: 359, height: 45 } }}
@@ -198,11 +201,13 @@
 			{/if}
 		{:else}
 			<Button
+				opacity={isDisplayNameValid ? 1 : 0}
 				transitions={{ ...getTransition(3) }}
 				color={isDisplayNameValid ? $globalStyle.activeMono : $globalStyle.inactiveMono}
 				backgroundColor={isDisplayNameValid ? $globalStyle.activeColor : $globalStyle.inactiveMono}
 				borderColor={isDisplayNameValid ? $globalStyle.activeColor : $globalStyle.inactiveMono}
 				hoverOpacityMin={0}
+				backdropFilter="blur(10px)"
 				onClick={() => {
 					if (phrase.length > 50 || !isDisplayNameValid) return;
 					isCheckingPhrase = true;

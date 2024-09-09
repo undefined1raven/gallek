@@ -91,6 +91,7 @@
 />
 <Box
 	transitions={getTransition(2)}
+	backdropFilter="blur(10px)"
 	figmaImport={{ mobile: { top: 410, left: 32, width: 366, height: 45 } }}
 >
 	<Input
@@ -113,7 +114,7 @@
 			backgroundColor={keyColor + '20'}
 			verticalFont={'15px'}
 			align="left"
-			backdropFilter="blur(2px)"
+			backdropFilter="blur(10px)"
 			alignPadding="15%"
 			text={keyLabel}
 			figmaImport={{ mobile: { top: 485, left: 32, width: 302, height: 45 } }}
@@ -129,6 +130,7 @@
 	<Button
 		opacity={validPhrase ? 1 : 0}
 		transitions={{ ...getTransition(3) }}
+		backdropFilter="blur(10px)"
 		color={$globalStyle.activeMono}
 		backgroundColor={$globalStyle.activeColor}
 		borderColor={$globalStyle.activeColor}
@@ -176,5 +178,6 @@
 	transitions={getDownTransition(1)}
 	verticalFont={'15px'}
 	label="Sign Up"
+	backdropFilter="blur(10px)"
 	figmaImport={{ mobile: { top: 639, left: 32, width: 366, height: 45 } }}
 />

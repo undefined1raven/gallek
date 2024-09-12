@@ -49,33 +49,53 @@
 	{/each}
 {:else}
 	<Box
-		style="overflow-x: scroll; overflow-y: hidden;"
-		figmaImport={{ desktop: { top: 110, left: 112, width: 1696, height: 951 } }}
+		style="overflow-y: scroll; overflow-x: hidden;"
+		horizontalCenter={true}
+		figmaImport={{ desktop: { top: 110, left: '50%', width: 1200, height: 951 } }}
 	>
 		<div
 			style="display: grid;
 			width: 100%;
 			height: 100%;
 			position: absolute;
-			grid-template-rows: repeat(3, auto);
-			grid-auto-flow: column;
-			grid-gap: 1rem;
+			grid-template-columns: repeat(4, 1fr);
+			grid-auto-flow: row;
+			grid-gap: 0.5rem;
 			height: 100%;"
 			class="grid"
 		>
 			{#each blobs as blob, idx}
 				<Box
-					style="position: relative; display: flex; justify-content: start; align-items: center;"
+					style="position: relative; display: flex; justify-content: center; align-items: center;"
 					width="100%"
 					height="15vw"
 				>
-					<img
-						src={blob}
-						style="height: 100%; flex-grow: 0; width: auto; border-radius: {getDynamicBorderRadius(
-							5
-						)}"
-						alt="hii"
-					/>
+					<Box
+						mouseEnter={() => {
+							const el = document.getElementById('d' + idx);
+							if (el) {
+								el.style.transform = 'scale(0.2)';
+								el.style.transition = 'transform  ease-in-out 0.2s';
+							}
+						}}
+						mouseLeave={() => {
+							const el = document.getElementById('d' + idx);
+							if (el) {
+								el.style.transform = 'scale(1)';
+								el.style.transition = 'transform  ease-in-out 0.2s';
+							}
+						}}
+						height="15vw"
+						width="15vw"
+						style="overflow: hidden;"
+					>
+						<img
+							id={'d' + idx}
+							src={blob}
+							style="object-fit: fit; border-radius: {getDynamicBorderRadius(5)}"
+							alt="hii"
+						/>
+					</Box>
 				</Box>
 			{/each}
 		</div>

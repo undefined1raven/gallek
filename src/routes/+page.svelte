@@ -10,22 +10,12 @@
 	import collectionCache from '../stores/collectionCache';
 
 	let pics = $collectionCache;
-	$: flicr = true;
-	collectionCache.subscribe((value) => {
-		pics = value;
-		flicr = false;
-		setTimeout(() => {
-			flicr = true;
-		}, 1500);
-	});
 </script>
 
 {#if isMobile()}
 	{#each $collectionCache === null ? [] : $collectionCache as blob, idx}
 		<Box width="15vh" backgroundColor="#00000000" height="15vh" left={5 * idx + '%'}>
-			{#if flicr}
-				<img src={blob.preview} style="height: 100%; width: 100%" alt="hii" />
-			{/if}
+			<img src={blob.preview} style="height: 100%; width: 100%" alt="hii" />
 		</Box>
 	{/each}
 {:else}
@@ -71,16 +61,14 @@
 							width="15vw"
 							style="overflow: hidden;"
 						>
-							{#if flicr}
-								<img
-									id={'d' + idx}
-									src={blob.preview}
-									style="object-fit: fit; border-radius: {getDynamicBorderRadius(
-										5
-									)}; user-select: none;"
-									alt="hii"
-								/>
-							{/if}
+							<img
+								id={'d' + idx}
+								src={blob.preview}
+								style="object-fit: fit; border-radius: {getDynamicBorderRadius(
+									5
+								)}; user-select: none;"
+								alt="hii"
+							/>
 						</Box>
 					{/if}
 				</Box>

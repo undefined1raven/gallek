@@ -19,25 +19,10 @@
 						const pics = data.pics;
 						let collectionCacheLocal = pics;
 						for (let ix = 0; ix < pics.length; ix++) {
-							client.storage
-								.from('gallek-collection')
-								.download(pics[ix].path)
-								.then((resx) => {
-									if (resx.error === null) {
-										const blob = resx.data;
-										const reader = new FileReader();
-										reader.onloadend = () => {
-											const base64Data = reader.result;
-											collectionCacheLocal[ix]['preview'] = base64Data;
-										};
-										reader.readAsDataURL(blob);
-									} else {
-										// console.log(resx.error);
-									}
-								})
-								.catch((e) => {
-									// console.log(e);
-								});
+							const picurl =
+								'https://wrbgbsulbyytggffcavl.supabase.co/storage/v1/object/public/gallek-collection/' +
+								pics[ix].path;
+							collectionCacheLocal[ix].preview = picurl;
 						}
 						hasLoaded = true;
 						collectionCache.set(collectionCacheLocal);

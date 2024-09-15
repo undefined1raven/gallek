@@ -18,13 +18,6 @@
 	$: ownCollection = $collectionCache.filter(
 		(elm) => elm.userID === localStorage.getItem('userID')
 	);
-	$: flicr = true;
-	collectionCache.subscribe((value) => {
-		flicr = false;
-		setTimeout(() => {
-			flicr = true;
-		}, 500);
-	});
 	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 387, containerWidth: 585 };
 </script>
 
@@ -90,15 +83,13 @@
 				height="100%"
 				style="border-right: solid 1px {$globalStyle.activeColor}; overflow: hidden;"
 			>
-				{#if flicr}
-					<img
-						style="user-select: none;"
-						width="100%"
-						height="auto"
-						src={item.preview}
-						alt={item.name}
-					/>
-				{/if}
+				<img
+					style="user-select: none;"
+					width="100%"
+					height="auto"
+					src={item.preview}
+					alt={item.name}
+				/>
 			</Box>
 			<Label
 				align="left"

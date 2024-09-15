@@ -15,18 +15,21 @@
 	import GallekLogoMin from '../../components/deco/GallekLogoMin.svelte';
 	import collectionCache from '../../stores/collectionCache';
 	import { createEventDispatcher } from 'svelte';
+	import NetworkDeco from '../../components/deco/NetworkDeco.svelte';
 	const dispatch = createEventDispatcher();
 	let fileInput;
 	$: preview = '';
 	$: fileExtension = null;
 	$: file = null;
 	$: name = '';
+	$: isUploading = false;
 	$: description = '';
 	const client = createClient(
 		'https://wrbgbsulbyytggffcavl.supabase.co/', ///safe. its read only on purpose
 		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYmdic3VsYnl5dGdnZmZjYXZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU3ODc2ODcsImV4cCI6MjA0MTM2MzY4N30.Z8-mJtHO1aS4tm9EScbIkQape1zXa0ycC_dZc86nXfg'
 	);
 	function upload() {
+		isUploading = true;
 		fetch(domainGetter('/fileOps/upload'), {
 			method: 'post',
 			credentials: 'include',
@@ -34,20 +37,22 @@
 		}).then(async (r) => {
 			const dataRes = await r.json();
 			const newPic = dataRes.newPic;
-			newPic['preview'] = preview;
-			collectionCache.update((old) => [...old, newPic]);
 			const data = dataRes.data.data;
-			dispatch('navEvent', 'main');
+			newPic['preview'] =
+				'https://wrbgbsulbyytggffcavl.supabase.co/storage/v1/object/public/gallek-collection/' +
+				data.path;
 			if (dataRes.status === 'success') {
 				client.storage
 					.from('gallek-collection')
 					.uploadToSignedUrl(data.path, data.token, file)
 					.then((r) => {
-						if (!r.error) {
-							console.log('uploaded');
-						}
+						newPic['userID'] = localStorage.getItem('userID');
+						collectionCache.update((old) => [...old, newPic]);
+						isUploading = false;
+						dispatch('navEvent', 'main');
 					})
 					.catch((e) => {
+						isUploading = false;
 						console.log(e);
 					});
 			}
@@ -85,12 +90,27 @@
 	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 387, containerWidth: 585 };
 </script>
 
+{#if isUploading}
+	<Box
+		width="99.2%"
+		style="z-index: 5;"
+		backgroundColor="#E2E5FFAA"
+		transitions={getTransition(1)}
+		height="100%"
+		backdropFilter="blur(10px)"
+	>
+		<Box top="55%" width="10%" height="3%" transitions={getTransition(4)}>
+			<NetworkDeco blinking={true} width="100%" height="100%" />
+		</Box>
+		<Label width="90%" height="6%" transitions={getTransition(3)} text="Upload in progress" />
+	</Box>
+{/if}
 <Box
 	style="overflow-x: hidden; overflow-y: scroll; display: flex; flex-direction: column; align-items: center; justify-content: start; "
 	figmaImport={{ mobile: { top: 66, left: 12, width: 406, height: 790 } }}
 >
 	<Label
-		width="100%"
+		width="99.2%"
 		align="left"
 		style="position: relative; margin-bottom: 3%; min-height: 3%;"
 		verticalFont={'15px'}
@@ -121,7 +141,7 @@
 		accept=".jpg, .jpeg, .png, .webp, .gif, .svg"
 	/>
 	<Label
-		width="100%"
+		width="99.2%"
 		align="left"
 		top={relOffset}
 		style="position: relative; margin-bottom: 3%; min-height: 3%;"
@@ -138,18 +158,18 @@
 		borderColor={$globalStyle.activeColor}
 	>
 		{#if preview === ''}
-			<GallekLogoMin width="100%" height="50%" style="opacity: 0.15;" />
+			<GallekLogoMin width="99.2%" height="50%" style="opacity: 0.15;" />
 		{/if}
 		<img
 			style="border-radius: {getDynamicBorderRadius('5px')};"
-			width="100%"
+			width="99.2%"
 			height="auto"
 			src={preview}
 			alt=""
 		/></Box
 	>
 	<Label
-		width="100%"
+		width="99.2%"
 		align="left"
 		top={relOffset}
 		style=" position: relative; margin-bottom: 3%; min-height: 3%;"
@@ -158,7 +178,7 @@
 		text={'Details (options)'}
 	/>
 	<Label
-		width="100%"
+		width="99.2%"
 		align="left"
 		top={relOffset}
 		style=" position: relative; margin-bottom: 2%; min-height: 3%;"
@@ -175,7 +195,7 @@
 		style="top: {relOffset}; min-height: 6%; position: relative; margin-bottom: 3%; padding-left: 2%; text-aling: left;"
 	/>
 	<Label
-		width="100%"
+		width="99.2%"
 		align="left"
 		top={relOffset}
 		style=" position: relative; margin-bottom: 2%; min-height: 3%;"

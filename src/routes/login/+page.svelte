@@ -73,14 +73,14 @@
 	horizontalCenter={isMobile() ? false : true}
 	borderColor={isMobile() ? '#00000000' : $globalStyle.activeColor}
 	figmaImport={{
-		mobile: { top: '0', width: '100%', height: '100%', left: '-3%' },
+		mobile: { top: '0', width: '100%', height: '100%', left: '0' },
 		desktop: { left: '50%', top: '50%', height: 387, width: 505 }
 	}}
 >
 	{#if authMode === false}
 		<Label
 			{figmaImportConfig}
-			verticalFont={'20px'}
+			verticalFont={'16px'}
 			desktopFont={'21px'}
 			text="Sign up"
 			figmaImport={{ mobile: { top: 327, left: 32 }, desktop: { top: 110, left: 22 } }}
@@ -98,7 +98,7 @@
 			<Label
 				{figmaImportConfig}
 				transitions={getTransition(1)}
-				verticalFont={'15px'}
+				verticalFont={'12px'}
 				desktopFont={'16px'}
 				text="Enter phrase"
 				figmaImport={{ mobile: { top: 380, left: 32 }, desktop: { left: 22, top: 161 } }}
@@ -122,7 +122,7 @@
 					hoverOpacityMin={isCheckingPhrase ? 20 : 10}
 					bind:value={phrase}
 					paddingLeft="1%"
-					verticalFont={'15px'}
+					verticalFont={'12px'}
 					desktopFont={'16px'}
 					borderColor={!isCheckingPhrase ? $globalStyle.activeColor : '#00000000'}
 				/>
@@ -170,7 +170,7 @@
 								setLoadingIndicator($globalStyle.errorColor, 500);
 							});
 					}}
-					verticalFont={'15px'}
+					verticalFont={'12px'}
 					desktopFont={'16px'}
 					label="Continue"
 					figmaImport={{
@@ -183,7 +183,7 @@
 			<Label
 				{figmaImportConfig}
 				transitions={getDownTransition(2)}
-				verticalFont={'15px'}
+				verticalFont={'12px'}
 				desktopFont={'13px'}
 				text="Already have an account?"
 				figmaImport={{ mobile: { top: 604, left: 32 }, desktop: { top: 337, left: 22 } }}
@@ -194,7 +194,7 @@
 					authMode = true;
 				}}
 				transitions={getDownTransition(1)}
-				verticalFont={'15px'}
+				verticalFont={'12px'}
 				desktopFont={'13px'}
 				backdropFilter="blur(10px)"
 				label="Log In"
@@ -207,7 +207,7 @@
 			<Label
 				{figmaImportConfig}
 				transitions={getTransition(1)}
-				verticalFont={'15px'}
+				verticalFont={'12px'}
 				desktopFont={'16px'}
 				text="Choose a display name"
 				figmaImport={{ mobile: { top: 380, left: 32 }, desktop: { left: 22, top: 161 } }}
@@ -265,7 +265,7 @@
 						transitions={{ ...getTransition(1) }}
 						color={$globalStyle.successColor}
 						backgroundColor={$globalStyle.successColor + '20'}
-						verticalFont={'15px'}
+						verticalFont={'12px'}
 						desktopFont={'16px'}
 						align="left"
 						backdropFilter="blur(10px)"
@@ -304,7 +304,7 @@
 							}
 						);
 					}}
-					verticalFont={'15px'}
+					verticalFont={'12px'}
 					desktopFont={'16px'}
 					label="Continue"
 					figmaImport={{

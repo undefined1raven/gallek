@@ -87,8 +87,8 @@
 <Label
 	{figmaImportConfig}
 	transitions={getTransition(1)}
-	verticalFont={'15px'}
-	desktopFont={'16px'}
+	verticalFont={'12px'}
+	desktopFont={'12px'}
 	text="Display name"
 	figmaImport={{ mobile: { top: 380, left: 32 }, desktop: { left: 22, top: 161 } }}
 />
@@ -105,11 +105,11 @@
 		readonly={isCheckingPhrase}
 		width="99%"
 		height="100%"
-		desktopFont={'16px'}
+		desktopFont={'12px'}
 		hoverOpacityMax={isCheckingPhrase ? 20 : 30}
 		hoverOpacityMin={isCheckingPhrase ? 20 : 10}
 		bind:value={displayName}
-		verticalFont={'17px'}
+		verticalFont={'15px'}
 		paddingLeft="1%"
 		borderColor={!isCheckingPhrase ? $globalStyle.activeColor : '#00000000'}
 	/>
@@ -121,12 +121,12 @@
 			transitions={{ ...getTransition(1) }}
 			color={keyColor}
 			backgroundColor={keyColor + '20'}
-			verticalFont={'15px'}
+			verticalFont={'12px'}
 			align="left"
 			backdropFilter="blur(10px)"
 			alignPadding="15%"
 			text={keyLabel}
-			desktopFont={'16px'}
+			desktopFont={'12px'}
 			figmaImport={{
 				mobile: { top: 485, left: 32, width: 302, height: 45 },
 				desktop: { width: 377, height: 45, top: 261, left: 22 }
@@ -179,8 +179,8 @@
 				}
 			);
 		}}
-		verticalFont={'15px'}
-		desktopFont={'16px'}
+		verticalFont={'12px'}
+		desktopFont={'12px'}
 		label="Use key"
 		figmaImport={{
 			mobile: { top: 485, left: 32, width: 366, height: 45 },
@@ -192,7 +192,7 @@
 <Label
 	{figmaImportConfig}
 	transitions={getDownTransition(2)}
-	verticalFont={'15px'}
+	verticalFont={'12px'}
 	desktopFont={'13px'}
 	text="Have a secret phrase?"
 	figmaImport={{ mobile: { top: 604, left: 32 }, desktop: { top: 337, left: 22 } }}
@@ -203,7 +203,7 @@
 		dispatch('changePage', 'signup');
 	}}
 	transitions={getDownTransition(1)}
-	verticalFont={'15px'}
+	verticalFont={'12px'}
 	label="Sign Up"
 	desktopFont={'13px'}
 	backdropFilter="blur(10px)"

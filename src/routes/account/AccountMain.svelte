@@ -23,7 +23,7 @@
 		flicr = false;
 		setTimeout(() => {
 			flicr = true;
-		}, 100);
+		}, 500);
 	});
 	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 387, containerWidth: 585 };
 </script>

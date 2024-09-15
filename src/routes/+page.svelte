@@ -16,7 +16,7 @@
 		flicr = false;
 		setTimeout(() => {
 			flicr = true;
-		}, 50);
+		}, 500);
 	});
 </script>
 

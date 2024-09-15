@@ -214,8 +214,8 @@
 
 <style>
 	.input::selection {
-		background-color: #99999920;
-		color: #aaa;
+		background-color: #9999992f;
+		color: #13142e;
 	}
 	.input {
 		position: absolute;

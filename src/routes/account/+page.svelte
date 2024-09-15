@@ -7,6 +7,8 @@
 	import FileDeco from '../../components/deco/FileDeco.svelte';
 	import domainGetter from '../../fn/domainGetter';
 	import { createClient } from '@supabase/supabase-js';
+	import isMobile from '../../fn/isMobile';
+	import displayName from '../../stores/displayName';
 	let fileInput;
 	const client = createClient(
 		'https://wrbgbsulbyytggffcavl.supabase.co/', ///safe. its read only on purpose
@@ -14,54 +16,75 @@
 	);
 
 	onMount(() => {
-		setTimeout(() => {
-			const reader = new FileReader();
-			fileInput.addEventListener('change', (e) => {
-				const fileList = e.target.files;
-				reader.readAsDataURL(fileList[0]);
-				const fileName = fileList[0].name;
-				const fileExtension = fileName.split('.').pop();
-				reader.addEventListener('load', (ex) => {
-					fetch(domainGetter('/fileOps/upload'), {
-						method: 'post',
-						credentials: 'include',
-						body: JSON.stringify({ ext: fileExtension })
-					}).then(async (r) => {
-						const dataRes = await r.json();
-						const data = dataRes.data.data;
-						if (dataRes.status === 'success') {
-							client.storage
-								.from('gallek-collection')
-								.uploadToSignedUrl(data.path, data.token, fileList[0])
-								.then((r) => {
-									console.log(r);
-								})
-								.catch((e) => {
-									console.log(e);
-								});
-						}
-					});
-				});
+		fetch(domainGetter('/auth/check'), {
+			method: 'get',
+			credentials: 'include'
+		}).then((res) => {
+			res.json().then((r) => {
+				if (r.authed && r.displayName) {
+					localStorage.setItem('name', r.displayName);
+					displayName.set(r.displayName);
+				} else {
+					window.location.href = '/login';
+				}
 			});
-		}, 40);
+		});
 	});
+
+	$: figmaImportConfig = isMobile()
+		? { containerHeight: window.screen.height, containerWidth: window.screen.width }
+		: { containerHeight: 387, containerWidth: 585 };
 </script>
 
-<Button
-	style="overflow: hidden;"
-	hoverOpacityMin={0}
-	hoverOpacityMax={20}
-	transitions={getTransition(2)}
-	alignPadding="15%"
-	align="left"
-	figmaImport={{ mobile: { top: 102, left: 5, width: 340, height: 59 } }}
-	label="Upload a file"
-	><FileDeco left="2%" height="40%" />
-
-	<input
-		style="width: 100%; height: 100%; opacity: 0.002;"
-		bind:this={fileInput}
-		class="keyInput"
-		type="file"
+<Box figmaImport={{ mobile: { top: 0, left: 0, width: '100%', height: '100%' }, desktop: {} }}>
+	<Label
+		figmaImport={{ mobile: { top: 18, left: 12 } }}
+		verticalFont={'20px'}
+		{figmaImportConfig}
+		text={'Welcome ' + $displayName}
 	/>
-</Button>
+	<Button
+		verticalFont="12px"
+		backdropFilter="blur(10px)"
+		hoverOpacityMin={0}
+		hoverOpacityMax={20}
+		onClick={() => {
+			fetch(domainGetter('/auth/logout'), {
+				method: 'get',
+				credentials: 'include'
+			}).then((res) => {
+				res.json().then((r) => {
+					if (r.success) {
+						window.location.href = '/login';
+					}
+				});
+			});
+		}}
+		figmaImport={{ mobile: { top: 17, width: 87, height: 26, left: 331 } }}
+		label="Log Out"
+	/>
+	<Label
+		figmaImport={{ mobile: { top: 66, left: 12 } }}
+		verticalFont={'15px'}
+		{figmaImportConfig}
+		text={'Your Collection'}
+	/>
+	<Button
+		verticalFont="15px"
+		backdropFilter="blur(10px)"
+		hoverOpacityMin={0}
+		hoverOpacityMax={20}
+		onClick={() => {}}
+		figmaImport={{ mobile: { top: 816, width: 406, height: 45, left: 12 } }}
+		label="View Collection"
+	/>
+	<Button
+		verticalFont="15px"
+		backdropFilter="blur(10px)"
+		hoverOpacityMin={0}
+		hoverOpacityMax={20}
+		onClick={() => {}}
+		figmaImport={{ mobile: { top: 874, width: 406, height: 45, left: 12 } }}
+		label="Upload new picture"
+	/>
+</Box>

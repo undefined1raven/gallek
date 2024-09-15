@@ -74,7 +74,7 @@
 						mouseEnter={() => {
 							const el = document.getElementById('d' + idx);
 							if (el) {
-								el.style.transform = 'scale(0.2)';
+								el.style.transform = 'scale(0.5)';
 								el.style.transition = 'transform  ease-in-out 0.2s';
 							}
 						}}

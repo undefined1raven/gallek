@@ -236,7 +236,7 @@
 					}}
 					hoverOpacityMax={isCheckingPhrase ? 20 : 30}
 					hoverOpacityMin={isCheckingPhrase ? 20 : 10}
-					verticalFont={'17px'}
+					verticalFont={'12px'}
 					paddingLeft="1%"
 					borderColor={!isCheckingPhrase ? $globalStyle.activeColor : '#00000000'}
 				/>

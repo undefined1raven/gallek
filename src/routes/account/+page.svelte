@@ -38,54 +38,72 @@
 
 	$: currentWindowID = 'main';
 	const windowIDToComponent = { main: AccountMain, upload: AccountUpload };
-	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 387, containerWidth: 585 };
+	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 811, containerWidth: 628 };
 </script>
 
-<Box figmaImport={{ mobile: { top: 0, left: 0, width: '100%', height: '100%' }, desktop: {} }}>
-	<Label
-		figmaImport={{ mobile: { top: 18, left: 12 } }}
-		verticalFont={'20px'}
-		{figmaImportConfig}
-		text={'Welcome ' + $displayName}
-	/>
-	<Button
-		verticalFont="12px"
-		backdropFilter="blur(10px)"
-		hoverOpacityMin={0}
-		hoverOpacityMax={20}
-		onClick={() => {
-			fetch(domainGetter('/auth/logout'), {
-				method: 'get',
-				credentials: 'include'
-			}).then((res) => {
-				res.json().then((r) => {
-					if (r.success) {
-						window.location.href = '/login';
-					}
-				});
-			});
+{#if isMobile()}
+	<Box
+		figmaImport={{
+			mobile: { top: 0, left: 0, width: '100%', height: '100%' },
+			desktop: {
+				top: 134,
+				left: 646,
+				width: figmaImportConfig?.width,
+				height: figmaImportConfig?.height
+			}
 		}}
-		figmaImport={{ mobile: { top: 17, width: 87, height: 26, left: 331 } }}
-		label="Log Out"
-	/>
-	{#if currentWindowID !== 'main'}
+	>
+		<Label
+			figmaImport={{ mobile: { top: 18, left: 12 }, desktop: { top: 18, left: 12, width: 'auto' } }}
+			verticalFont={'20px'}
+			desktopFont="20px"
+			style="white-space: nowrap;"
+			{figmaImportConfig}
+			text={'Welcome ' + $displayName}
+		/>
 		<Button
-			transitions="{getTransition(1)}path"
 			verticalFont="12px"
 			backdropFilter="blur(10px)"
 			hoverOpacityMin={0}
 			hoverOpacityMax={20}
 			onClick={() => {
-				currentWindowID = 'main';
+				fetch(domainGetter('/auth/logout'), {
+					method: 'get',
+					credentials: 'include'
+				}).then((res) => {
+					res.json().then((r) => {
+						if (r.success) {
+							window.location.href = '/login';
+						}
+					});
+				});
 			}}
-			figmaImport={{ mobile: { top: 17, width: 87, height: 26, left: 238 } }}
-			label="Back"
+			figmaImport={{
+				mobile: { top: 17, width: 87, height: 26, left: 331 },
+				desktop: { top: 17, width: 87, height: 26, left: 331 }
+			}}
+			label="Log Out"
 		/>
-	{/if}
-	<svelte:component
-		this={windowIDToComponent[currentWindowID]}
-		on:navEvent={(e) => {
-			currentWindowID = e.detail;
-		}}
-	/>
-</Box>
+		{#if currentWindowID !== 'main'}
+			<Button
+				transitions="{getTransition(1)}path"
+				verticalFont="12px"
+				backdropFilter="blur(10px)"
+				hoverOpacityMin={0}
+				hoverOpacityMax={20}
+				onClick={() => {
+					currentWindowID = 'main';
+				}}
+				figmaImport={{ mobile: { top: 17, width: 87, height: 26, left: 238 } }}
+				label="Back"
+			/>
+		{/if}
+		<svelte:component
+			this={windowIDToComponent[currentWindowID]}
+			on:navEvent={(e) => {
+				currentWindowID = e.detail;
+			}}
+		/>
+	</Box>
+{:else}
+	<Label text="Account for desktop coming soon" width="100%" top="50%" />{/if}

@@ -86,7 +86,7 @@
 	{figmaImportConfig}
 	transitions={getTransition(1)}
 	verticalFont={'12px'}
-	desktopFont={'12px'}
+	desktopFont={'15px'}
 	text="Display name"
 	figmaImport={{ mobile: { top: 380, left: 32 }, desktop: { left: 22, top: 161 } }}
 />
@@ -103,7 +103,7 @@
 		readonly={isCheckingPhrase}
 		width="99%"
 		height="100%"
-		desktopFont={'12px'}
+		desktopFont={'15px'}
 		hoverOpacityMax={isCheckingPhrase ? 20 : 30}
 		hoverOpacityMin={isCheckingPhrase ? 20 : 10}
 		bind:value={displayName}
@@ -124,7 +124,7 @@
 			backdropFilter="blur(10px)"
 			alignPadding="15%"
 			text={keyLabel}
-			desktopFont={'12px'}
+			desktopFont={'15px'}
 			figmaImport={{
 				mobile: { top: 485, left: 32, width: 302, height: 45 },
 				desktop: { width: 377, height: 45, top: 261, left: 22 }
@@ -178,7 +178,7 @@
 			);
 		}}
 		verticalFont={'12px'}
-		desktopFont={'12px'}
+		desktopFont={'15px'}
 		label="Use key"
 		figmaImport={{
 			mobile: { top: 485, left: 32, width: 366, height: 45 },

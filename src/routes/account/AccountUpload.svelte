@@ -118,6 +118,7 @@
 		bind:this={fileInput}
 		class="keyInput"
 		type="file"
+		accept=".jpg, .jpeg, .png, .webp, .gif, .svg"
 	/>
 	<Label
 		width="100%"

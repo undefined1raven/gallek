@@ -16,7 +16,7 @@
 		flicr = false;
 		setTimeout(() => {
 			flicr = true;
-		}, 500);
+		}, 1500);
 	});
 </script>
 
@@ -51,36 +51,38 @@
 					width="100%"
 					height="15vw"
 				>
-					<Box
-						mouseEnter={() => {
-							const el = document.getElementById('d' + idx);
-							if (el) {
-								el.style.transform = 'scale(0.5)';
-								el.style.transition = 'transform  ease-in-out 0.2s';
-							}
-						}}
-						mouseLeave={() => {
-							const el = document.getElementById('d' + idx);
-							if (el) {
-								el.style.transform = 'scale(1)';
-								el.style.transition = 'transform  ease-in-out 0.2s';
-							}
-						}}
-						height="15vw"
-						width="15vw"
-						style="overflow: hidden;"
-					>
-						{#if flicr}
-							<img
-								id={'d' + idx}
-								src={blob.preview}
-								style="object-fit: fit; border-radius: {getDynamicBorderRadius(
-									5
-								)}; user-select: none;"
-								alt="hii"
-							/>
-						{/if}
-					</Box>
+					{#if blob.preview}
+						<Box
+							mouseEnter={() => {
+								const el = document.getElementById('d' + idx);
+								if (el) {
+									el.style.transform = 'scale(0.5)';
+									el.style.transition = 'transform  ease-in-out 0.2s';
+								}
+							}}
+							mouseLeave={() => {
+								const el = document.getElementById('d' + idx);
+								if (el) {
+									el.style.transform = 'scale(1)';
+									el.style.transition = 'transform  ease-in-out 0.2s';
+								}
+							}}
+							height="15vw"
+							width="15vw"
+							style="overflow: hidden;"
+						>
+							{#if flicr}
+								<img
+									id={'d' + idx}
+									src={blob.preview}
+									style="object-fit: fit; border-radius: {getDynamicBorderRadius(
+										5
+									)}; user-select: none;"
+									alt="hii"
+								/>
+							{/if}
+						</Box>
+					{/if}
 				</Box>
 			{/each}
 		</div>

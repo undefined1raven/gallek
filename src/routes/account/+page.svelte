@@ -38,9 +38,7 @@
 
 	$: currentWindowID = 'main';
 	const windowIDToComponent = { main: AccountMain, upload: AccountUpload };
-	$: figmaImportConfig = isMobile()
-		? { containerHeight: window.screen.height, containerWidth: window.screen.width }
-		: { containerHeight: 387, containerWidth: 585 };
+	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 387, containerWidth: 585 };
 </script>
 
 <Box figmaImport={{ mobile: { top: 0, left: 0, width: '100%', height: '100%' }, desktop: {} }}>

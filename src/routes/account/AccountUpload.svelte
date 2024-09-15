@@ -82,9 +82,7 @@
 	$: maxChars(150, name);
 	$: maxChars2(1500, description);
 	const relOffset = '-3%';
-	$: figmaImportConfig = isMobile()
-		? { containerHeight: window.screen.height, containerWidth: window.screen.width }
-		: { containerHeight: 387, containerWidth: 585 };
+	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 387, containerWidth: 585 };
 </script>
 
 <Box

@@ -67,7 +67,7 @@
 </script>
 
 <Label
-	verticalFont={'20px'}
+	verticalFont={'16px'}
 	{figmaImportConfig}
 	desktopFont={'21px'}
 	text="Log in"

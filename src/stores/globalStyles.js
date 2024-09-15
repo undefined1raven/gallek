@@ -4,10 +4,10 @@ let globalStyle = writable({
     activeColor: '#192058',//0038FF
     activeLightColor: '#2958FF',
     secondaryColor: '#363A5F',
-    inactiveColor: '#353535',
+    inactiveColor: '#7D81A7',
     activeMono: '#192058',
     secondaryMono: '#363A5F',
-    inactiveMono: '#353535',
+    inactiveMono: '#7D81A7',
     errorColor: '#A90000',
     successColor: '#006410',
     borderRadius: '3px',

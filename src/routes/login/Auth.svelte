@@ -61,23 +61,6 @@
 		}, timeout);
 	}
 
-	onMount(() => {
-		fetch(domainGetter('/auth/check'), {
-			method: 'get',
-			credentials: 'include'
-		})
-			.then((res) => {
-				res.json().then((r) => {
-					if (r.authed) {
-						isLoggedIn.set(true);
-						window.location.href = '/account';
-					}
-				});
-			})
-			.catch((e) => {
-				setLoadingIndicator($globalStyle.errorColor, 500);
-			});
-	});
 	$: isCheckingKey = false;
 
 	$: figmaImportConfig = isMobile()

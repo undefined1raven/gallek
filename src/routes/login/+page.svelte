@@ -50,8 +50,10 @@
 		})
 			.then((res) => {
 				res.json().then((r) => {
-					if (r.authed) {
+					if (r.authed && r.displayName && r.userID) {
 						isLoggedIn.set(true);
+						localStorage.setItem('name', r.displayName);
+						localStorage.setItem('userID', r.userID);
 						window.location.href = '/account';
 					}
 				});

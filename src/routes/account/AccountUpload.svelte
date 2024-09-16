@@ -87,7 +87,7 @@
 	$: maxChars(150, name);
 	$: maxChars2(1500, description);
 	const relOffset = '-3%';
-	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 387, containerWidth: 585 };
+	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 811, containerWidth: 663 };
 </script>
 
 {#if isUploading}
@@ -106,8 +106,20 @@
 	</Box>
 {/if}
 <Box
+	{figmaImportConfig}
+	horizontalCenter={isMobile() ? false : true}
+	backgroundColor="#000000"
+	verticalCenter={isMobile() ? false : true}
 	style="overflow-x: hidden; overflow-y: scroll; display: flex; flex-direction: column; align-items: center; justify-content: start; "
-	figmaImport={{ mobile: { top: 66, left: 12, width: 406, height: 790 } }}
+	figmaImport={{
+		mobile: { top: 66, left: 12, width: 406, height: 790 },
+		desktop: {
+			top: 66,
+			left: 120,
+			width: 423,
+			height: 623
+		}
+	}}   
 >
 	<Label
 		width="99.2%"
@@ -213,6 +225,7 @@
 	/>
 </Box>
 <Button
+	{figmaImportConfig}
 	hoverOpacityMax={file && fileExtension ? 20 : 0}
 	hoverOpacityMin={0}
 	color={file && fileExtension ? $globalStyle.activeColor : $globalStyle.inactiveColor}
@@ -220,7 +233,11 @@
 	backgroundColor={file && fileExtension ? $globalStyle.activeColor : $globalStyle.inactiveColor}
 	label="Upload new pic"
 	verticalFont="15px"
-	figmaImport={{ mobile: { top: 874, left: 12, width: 408, height: 45 } }}
+	verticalCenter={isMobile() ? false : true}
+	figmaImport={{
+		mobile: { top: 874, left: 12, width: 408, height: 45 },
+		desktop: { top: 866, left: '50%', width: 423, height: 45 }
+	}}
 	onClick={() => {
 		if (file === null || fileExtension === null) return;
 		upload();

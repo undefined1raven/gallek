@@ -38,72 +38,71 @@
 
 	$: currentWindowID = 'main';
 	const windowIDToComponent = { main: AccountMain, upload: AccountUpload };
-	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 811, containerWidth: 628 };
+	$: figmaImportConfig = isMobile() ? undefined : { containerHeight: 811, containerWidth: 663 };
 </script>
 
-{#if isMobile()}
-	<Box
-		figmaImport={{
-			mobile: { top: 0, left: 0, width: '100%', height: '100%' },
-			desktop: {
-				top: 134,
-				left: 646,
-				width: figmaImportConfig?.width,
-				height: figmaImportConfig?.height
-			}
+<Box
+	figmaImport={{
+		mobile: { top: 0, left: 0, width: '100%', height: '100%' },
+		desktop: {
+			top: 134,
+			left: 646,
+			width: figmaImportConfig?.containerWidth,
+			height: figmaImportConfig?.containerHeight
+		}
+	}}
+>
+	<Label
+		figmaImport={{ mobile: { top: 18, left: 12 }, desktop: { top: 18, left: 12, width: 'auto' } }}
+		verticalFont={'20px'}
+		desktopFont="20px"
+		style="white-space: nowrap;"
+		{figmaImportConfig}
+		text={'Welcome ' + $displayName}
+	/>
+	<Button
+		verticalFont="12px"
+		backdropFilter="blur(10px)"
+		hoverOpacityMin={0}
+		desktopFont="13px"
+		hoverOpacityMax={20}
+		{figmaImportConfig}
+		onClick={() => {
+			fetch(domainGetter('/auth/logout'), {
+				method: 'get',
+				credentials: 'include'
+			}).then((res) => {
+				res.json().then((r) => {
+					if (r.success) {
+						window.location.href = '/login';
+					}
+				});
+			});
 		}}
-	>
-		<Label
-			figmaImport={{ mobile: { top: 18, left: 12 }, desktop: { top: 18, left: 12, width: 'auto' } }}
-			verticalFont={'20px'}
-			desktopFont="20px"
-			style="white-space: nowrap;"
-			{figmaImportConfig}
-			text={'Welcome ' + $displayName}
-		/>
+		figmaImport={{
+			mobile: { top: 17, width: 87, height: 26, left: 331 },
+			desktop: { top: 19, width: 87, height: 26, left: 560 }
+		}}
+		label="Log Out"
+	/>
+	{#if currentWindowID !== 'main'}
 		<Button
+			transitions="{getTransition(1)}path"
 			verticalFont="12px"
 			backdropFilter="blur(10px)"
 			hoverOpacityMin={0}
 			hoverOpacityMax={20}
 			onClick={() => {
-				fetch(domainGetter('/auth/logout'), {
-					method: 'get',
-					credentials: 'include'
-				}).then((res) => {
-					res.json().then((r) => {
-						if (r.success) {
-							window.location.href = '/login';
-						}
-					});
-				});
+				currentWindowID = 'main';
 			}}
-			figmaImport={{
-				mobile: { top: 17, width: 87, height: 26, left: 331 },
-				desktop: { top: 17, width: 87, height: 26, left: 331 }
-			}}
-			label="Log Out"
+			figmaImport={{ mobile: { top: 17, width: 87, height: 26, left: 238 } }}
+			label="Back"
 		/>
-		{#if currentWindowID !== 'main'}
-			<Button
-				transitions="{getTransition(1)}path"
-				verticalFont="12px"
-				backdropFilter="blur(10px)"
-				hoverOpacityMin={0}
-				hoverOpacityMax={20}
-				onClick={() => {
-					currentWindowID = 'main';
-				}}
-				figmaImport={{ mobile: { top: 17, width: 87, height: 26, left: 238 } }}
-				label="Back"
-			/>
-		{/if}
-		<svelte:component
-			this={windowIDToComponent[currentWindowID]}
-			on:navEvent={(e) => {
-				currentWindowID = e.detail;
-			}}
-		/>
-	</Box>
-{:else}
-	<Label text="Account for desktop coming soon" width="100%" top="50%" />{/if}
+	{/if}
+	<svelte:component
+		this={windowIDToComponent[currentWindowID]}
+		on:navEvent={(e) => {
+			currentWindowID = e.detail;
+		}}
+	/>
+</Box>

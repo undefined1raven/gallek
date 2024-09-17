@@ -92,38 +92,43 @@
 
 {#if isUploading}
 	<Box
-		width="99.2%"
+		width={!isMobile() ? '290%' : '99.2%'}
 		style="z-index: 5;"
-		backgroundColor="#E2E5FFAA"
+		backgroundColor={isMobile() ? '#E2E5FFAA' : '#E2E5FF90'}
 		transitions={getTransition(1)}
-		height="100%"
+		height={!isMobile() ? '150%' : '100%'}
 		backdropFilter="blur(10px)"
 	>
 		<Box top="55%" width="10%" height="3%" transitions={getTransition(4)}>
 			<NetworkDeco blinking={true} width="100%" height="100%" />
 		</Box>
-		<Label width="90%" height="6%" transitions={getTransition(3)} text="Upload in progress" />
+		<Label
+			width={isMobile() ? '90%' : '40%'}
+			height="6%"
+			transitions={getTransition(3)}
+			text="Upload in progress"
+		/>
 	</Box>
 {/if}
 <Box
 	{figmaImportConfig}
 	horizontalCenter={isMobile() ? false : true}
-	backgroundColor="#000000"
 	verticalCenter={isMobile() ? false : true}
-	style="overflow-x: hidden; overflow-y: scroll; display: flex; flex-direction: column; align-items: center; justify-content: start; "
+	style="overflow-x: hidden; overflow-y: scroll; display: flex; flex-direction: column; align-items: center; justify-content: start;"
 	figmaImport={{
 		mobile: { top: 66, left: 12, width: 406, height: 790 },
 		desktop: {
-			top: 66,
-			left: 120,
-			width: 423,
-			height: 623
+			top: 420,
+			left: '50%',
+			width: '70%',
+			height: 720
 		}
-	}}   
+	}}
 >
 	<Label
 		width="99.2%"
 		align="left"
+		desktopFont="16px"
 		style="position: relative; margin-bottom: 3%; min-height: 3%;"
 		verticalFont={'15px'}
 		{figmaImportConfig}
@@ -141,6 +146,7 @@
 		transitions={getTransition(1)}
 		alignPadding="15%"
 		align="left"
+		desktopFont="16px"
 		label="Upload a file"
 	>
 		<FileDeco left="2%" height="40%" />
@@ -158,6 +164,7 @@
 		top={relOffset}
 		style="position: relative; margin-bottom: 3%; min-height: 3%;"
 		verticalFont={'15px'}
+		desktopFont="16px"
 		{figmaImportConfig}
 		text={'Preview'}
 	/>
@@ -184,6 +191,7 @@
 		width="99.2%"
 		align="left"
 		top={relOffset}
+		desktopFont="16px"
 		style=" position: relative; margin-bottom: 3%; min-height: 3%;"
 		verticalFont={'15px'}
 		{figmaImportConfig}
@@ -194,6 +202,7 @@
 		align="left"
 		top={relOffset}
 		style=" position: relative; margin-bottom: 2%; min-height: 3%;"
+		desktopFont="16px"
 		verticalFont={'13px'}
 		{figmaImportConfig}
 		text={'Name'}
@@ -202,6 +211,7 @@
 		width="98%"
 		height="7%"
 		bind:value={name}
+		desktopFont="16px"
 		verticalFont={'13px'}
 		borderColor={$globalStyle.activeColor}
 		style="top: {relOffset}; min-height: 6%; position: relative; margin-bottom: 3%; padding-left: 2%; text-aling: left;"
@@ -211,6 +221,7 @@
 		align="left"
 		top={relOffset}
 		style=" position: relative; margin-bottom: 2%; min-height: 3%;"
+		desktopFont="16px"
 		verticalFont={'13px'}
 		{figmaImportConfig}
 		text={'Description'}
@@ -219,6 +230,7 @@
 		width="98%"
 		bind:value={description}
 		height="15%"
+		desktopFont="16px"
 		verticalFont={'13px'}
 		borderColor={$globalStyle.activeColor}
 		style="top: {relOffset}; position: relative; min-height: 15%; padding-top: 2%; margin-bottom: 3%; padding-left: 2%; text-aling: left;"
@@ -232,8 +244,10 @@
 	borderColor={file && fileExtension ? $globalStyle.activeColor : $globalStyle.inactiveColor}
 	backgroundColor={file && fileExtension ? $globalStyle.activeColor : $globalStyle.inactiveColor}
 	label="Upload new pic"
+	desktopFont="16px"
 	verticalFont="15px"
 	verticalCenter={isMobile() ? false : true}
+	horizontalCenter={isMobile() ? false : true}
 	figmaImport={{
 		mobile: { top: 874, left: 12, width: 408, height: 45 },
 		desktop: { top: 866, left: '50%', width: 423, height: 45 }

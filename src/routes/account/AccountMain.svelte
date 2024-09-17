@@ -34,19 +34,25 @@
 	}}
 />
 <Label
-	figmaImport={{ mobile: { top: 66, left: 12 } }}
+	figmaImport={{ mobile: { top: 66, left: 12 }, desktop: { top: 25, left: 11 } }}
 	verticalFont={'15px'}
+	desktopFont="16px"
 	{figmaImportConfig}
 	text={'Your Collection'}
 />
 <Box
+	horizontalCenter={isMobile() ? false : true}
+	{figmaImportConfig}
 	style="overflow-y: scroll; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; justify-content: start; "
-	figmaImport={{ mobile: { top: 98, left: 12, width: 406, height: 705 } }}
+	figmaImport={{
+		mobile: { top: 98, left: 12, width: 406, height: 705 },
+		desktop: { top: 45, left: '50%', width: '95%', height: 325 }
+	}}
 >
 	{#each ownCollection as item}
 		<Box
-			backgroundColor="#00000000"
-			width="100%"
+			borderColor={isMobile() ? 'transparent' : $globalStyle.activeColor}
+			width={isMobile() ? '100%' : '99%'}
 			onSelected={() => {
 				selectedItemID = item.id;
 			}}
@@ -60,10 +66,12 @@
 			}}
 			height="12%"
 			backdropFilter="blur(4px)"
-			style="position: relative; min-height: 12%; margin-bottom: 3%;"
+			style="position: relative; min-height: 12%; margin-bottom: 3%; {isMobile()
+				? ''
+				: 'margin-top: 3%;'}"
 		>
 			{#if deletionsPending.indexOf(item.id) === -1}
-				{#if selectedItemID === item.id}
+				{#if selectedItemID === item.id || !isMobile()}
 					<Button
 						transitions={getTransition(2)}
 						className="dontHide"
@@ -92,8 +100,9 @@
 						backgroundColor={$globalStyle.errorColor}
 						borderColor={$globalStyle.errorColor}
 						verticalFont="12px"
-						width="30%"
-						left="65%"
+						width={isMobile() ? '30%' : '19%'}
+						left={isMobile() ? '65%' : '78%'}
+						desktopFont="16px"
 						top="32.5%"
 						height="35%"
 					/>
@@ -102,6 +111,7 @@
 					align="left"
 					text="Uploaded on:"
 					top="30%"
+					desktopFont="16px"
 					verticalFont="12px"
 					height="10%"
 					width="30%"
@@ -112,6 +122,7 @@
 					align="left"
 					verticalFont="12px"
 					height="10%"
+					desktopFont="16px"
 					width="30%"
 				/>
 			{:else}
@@ -123,6 +134,7 @@
 					align="left"
 					left="35%"
 					verticalFont="12px"
+					desktopFont="16px"
 					height="100%"
 					width="80%"
 				/>
@@ -151,7 +163,9 @@
 			transitions={getTransition(2)}
 			text="Upload a pic to get started"
 			width="80%"
+			backdropFilter="blur(10px)"
 			verticalFont="12px"
+			desktopFont="16px"
 			height="7%"
 			top="2%"
 			backgroundColor="{$globalStyle.activeColor}20"
@@ -160,23 +174,33 @@
 </Box>
 <Button
 	verticalFont="13px"
+	desktopFont="16px"
 	backdropFilter="blur(10px)"
 	hoverOpacityMin={0}
 	hoverOpacityMax={20}
+	horizontalCenter={isMobile() ? false : true}
 	onClick={() => {
 		window.location.href = '/';
 	}}
-	figmaImport={{ mobile: { top: 816, width: 406, height: 45, left: 12 } }}
+	figmaImport={{
+		mobile: { top: 816, width: 406, height: 45, left: 12 },
+		desktop: { top: 1050, left: '50%', width: '50%', height: 45 }
+	}}
 	label="View Collection"
 />
 <Button
 	verticalFont="13px"
+	desktopFont="16px"
+	horizontalCenter={isMobile() ? false : true}
 	backdropFilter="blur(10px)"
 	hoverOpacityMin={0}
 	hoverOpacityMax={20}
 	onClick={() => {
 		dispatch('navEvent', 'upload');
 	}}
-	figmaImport={{ mobile: { top: 874, width: 406, height: 45, left: 12 } }}
+	figmaImport={{
+		mobile: { top: 874, width: 406, height: 45, left: 12 },
+		desktop: { top: 1115, left: '50%', width: '50%', height: 45 }
+	}}
 	label="Upload new picture"
 />

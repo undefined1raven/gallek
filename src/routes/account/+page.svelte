@@ -90,12 +90,17 @@
 			transitions="{getTransition(1)}path"
 			verticalFont="12px"
 			backdropFilter="blur(10px)"
+			desktopFont="13px"
 			hoverOpacityMin={0}
+			{figmaImportConfig}
 			hoverOpacityMax={20}
 			onClick={() => {
 				currentWindowID = 'main';
 			}}
-			figmaImport={{ mobile: { top: 17, width: 87, height: 26, left: 238 } }}
+			figmaImport={{
+				mobile: { top: 17, width: 87, height: 26, left: 238 },
+				desktop: { top: 19, width: 87, height: 26, left: 460 }
+			}}
 			label="Back"
 		/>
 	{/if}

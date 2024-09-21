@@ -1,77 +1,225 @@
 <script lang="ts">
-	import { createClient } from '@supabase/supabase-js';
-	import { onMount } from 'svelte';
 	import Box from '../components/common/Box.svelte';
 	import isMobile from '../fn/isMobile';
-	import { getInRightTransition } from '../fn/getTransisitions';
+	import { getInLeftTransition, getInRightTransition, getTransition } from '../fn/getTransisitions';
 	import { getDynamicBorderRadius } from '../fn/dynamicBorders';
 	import GallekImageBkg from '../components/deco/GallekPicBkg.svelte';
 	import GallekPicBkg from '../components/deco/GallekPicBkg.svelte';
 	import collectionCache from '../stores/collectionCache';
+	import GallekLogo from '../components/deco/GallekLogo.svelte';
+	import GallekLogoMin from '../components/deco/GallekLogoMin.svelte';
 
-	let pics = $collectionCache;
+	$: pics = $collectionCache;
+
+	function onScrolled(scrollTop) {
+		const scrl = document.getElementById('scrollable');
+		if (scrl) {
+			console.log('scrolling', scrollTop);
+			scrl.scrollTop = scrollTop;
+		}
+	}
+
+	$: onScrolled(scrollTop);
+	$: collectionCacheHalf1 = [];
+	$: collectionCacheHalf2 = [];
+	$: imgLoaded1 = [];
+	$: imgLoaded2 = [];
+	$: imgsLoaded = [];
+	$: scrollTop = 0;
+	$: splitCollectionCache(pics);
+	function splitCollectionCache(pics) {
+		if (pics) {
+			let half = Math.ceil(pics.length / 2);
+			collectionCacheHalf1 = pics.slice(0, half);
+			for (let ix = 0; ix < collectionCacheHalf1.length; ix++) {
+				imgLoaded1[ix] = false;
+			}
+			collectionCacheHalf2 = pics.slice(half, pics.length);
+			for (let ix = 0; ix < collectionCacheHalf1.length; ix++) {
+				imgLoaded2[ix] = false;
+			}
+			for (let ix = 0; ix < pics.length; ix++) {
+				imgsLoaded[ix] = false;
+			}
+		}
+	}
 </script>
 
+<Box
+	transitions={getTransition(1, 400)}
+	style="justify-items: start; align-items: center; display: flex;"
+	figmaImport={{
+		desktop: { top: 1, left: '0.5%', height: 45, width: '15%' },
+		mobile: { top: 1, width: '55%' }
+	}}
+>
+	<GallekLogo width="42%" height="auto" left={'0%'} />
+</Box>
+
 {#if isMobile()}
-	{#each $collectionCache === null ? [] : $collectionCache as blob, idx}
-		<Box width="15vh" backgroundColor="#00000000" height="15vh" left={5 * idx + '%'}>
-			<img src={blob.preview} style="height: 100%; width: 100%" alt="hii" />
-		</Box>
-	{/each}
-{:else}
 	<Box
 		style="overflow-y: scroll; overflow-x: hidden;"
 		horizontalCenter={true}
-		figmaImport={{ desktop: { top: 110, left: '50%', width: 1200, height: 951 } }}
+		figmaImport={{ mobile: { top: 50, left: '50%', width: '100%', height: '100%' } }}
 	>
 		<div
-			style="display: grid;
-			width: 100%;
-			height: 100%;
-			position: absolute;
-			grid-template-columns: repeat(4, 1fr);
-			grid-auto-flow: row;
-			grid-gap: 0.5rem;
-			height: 100%;"
+			style="
+        display: grid;
+        left: 0.5%;
+        width: 99%;
+        top: 0%;
+        height: auto;
+        position: absolute;
+        grid-template-columns: repeat(1, 1fr);
+        grid-auto-rows: auto;
+        grid-gap: 0.5rem;
+"
 			class="grid"
 		>
-			{#each $collectionCache === null ? [] : $collectionCache as blob, idx}
+			{#each pics === null ? [] : pics as blob, idx}
 				<Box
-					style="position: relative; display: flex; justify-content: center; align-items: center;"
+					style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden;"
 					width="100%"
-					height="15vw"
+					height="auto"
 				>
 					{#if blob.preview}
-						<Box
-							mouseEnter={() => {
-								const el = document.getElementById('d' + idx);
-								if (el) {
-									el.style.transform = 'scale(0.5)';
-									el.style.transition = 'transform  ease-in-out 0.2s';
-								}
+						<img
+							on:load={() => {
+								const n = imgsLoaded;
+								n[idx] = true;
+								imgsLoaded = n;
 							}}
-							mouseLeave={() => {
-								const el = document.getElementById('d' + idx);
-								if (el) {
-									el.style.transform = 'scale(1)';
-									el.style.transition = 'transform  ease-in-out 0.2s';
-								}
-							}}
-							height="15vw"
-							width="15vw"
-							style="overflow: hidden;"
-						>
-							<img
-								id={'d' + idx}
-								src={blob.preview}
-								style="object-fit: fit; border-radius: {getDynamicBorderRadius(
-									5
-								)}; user-select: none;"
-								alt="hii"
-							/>
-						</Box>
+							src={blob.preview}
+							style="width: 100%; height: auto; border-radius: {getDynamicBorderRadius(
+								'5px'
+							)}; user-select: none;"
+							alt="hii"
+						/>
+						{#if imgsLoaded[idx] === false}
+							<Box
+								transitions={getTransition(idx)}
+								width="100%"
+								height="100%"
+								backdropFilter="blur(100px)"
+							>
+								<GallekLogoMin width="20%" height="auto" />
+							</Box>
+						{/if}
 					{/if}
 				</Box>
+			{/each}
+		</div>
+	</Box>
+{:else}
+	<Box
+		id="scrollable"
+		style="overflow-y: scroll; overflow-x: hidden;"
+		horizontalCenter={true}
+		figmaImport={{ desktop: { top: 50, left: '50%', width: '100%', height: '95%' } }}
+	>
+		<div
+			style="
+display: grid;
+left: 0.5%;
+width: 49.5%;
+height: auto;
+        top: 0%;
+position: absolute;
+grid-template-columns: repeat(1, 1fr);
+grid-auto-rows: auto;
+grid-gap: 0.5rem;
+"
+			class="grid"
+		>
+			{#each collectionCacheHalf1 === null ? [] : collectionCacheHalf1 as blob, idx}
+				{#if blob.preview}
+					<Box
+						transitions={getTransition(idx)}
+						style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden;"
+						width="100%"
+						height="auto"
+					>
+						<img
+							on:load={() => {
+								const n = imgLoaded1;
+								n[idx] = true;
+								imgLoaded1 = n;
+							}}
+							src={blob.preview}
+							style="width: 100%; height: auto; border-radius: {getDynamicBorderRadius(
+								'5px'
+							)}; user-select: none;"
+							alt="hii"
+						/>
+						{#if imgLoaded1[idx] === false}
+							<Box
+								transitions={getTransition(idx)}
+								width="100%"
+								height="100%"
+								backdropFilter="blur(100px)"
+							>
+								<GallekLogoMin width="20%" height="auto" />
+							</Box>
+						{/if}
+					</Box>
+				{/if}
+			{/each}
+		</div>
+	</Box>
+	<Box
+		onscroll={(e) => {
+			scrollTop = e.target.scrollTop;
+		}}
+		style="overflow-y: scroll; overflow-x: hidden;"
+		horizontalCenter={true}
+		figmaImport={{ desktop: { top: 50, left: '50%', width: '100%', height: '95%' } }}
+	>
+		<div
+			style="
+        display: grid;
+        left: 50.5%;
+        width: 49%;
+        top: 0%;
+        height: auto;
+        position: absolute;
+        grid-template-columns: repeat(1, 1fr);
+        grid-auto-rows: auto;
+        grid-gap: 0.5rem;
+    "
+			class="grid"
+		>
+			{#each collectionCacheHalf2 === null ? [] : collectionCacheHalf2 as blob, idx}
+				{#if blob.preview}
+					<Box
+						transitions={getTransition(idx)}
+						style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden;"
+						width="100%"
+						height="auto"
+					>
+						<img
+							on:load={() => {
+								const n = imgLoaded2;
+								n[idx] = true;
+								imgLoaded2 = n;
+							}}
+							src={blob.preview}
+							style="width: 100%; height: auto; border-radius: {getDynamicBorderRadius(
+								'5px'
+							)}; user-select: none;"
+							alt="hii"
+						/>
+						{#if imgLoaded2[idx] === false}
+							<Box
+								transitions={getTransition(idx)}
+								width="100%"
+								height="100%"
+								backdropFilter="blur(100px)"
+							>
+								<GallekLogoMin width="20%" height="auto" />
+							</Box>
+						{/if}
+					</Box>
+				{/if}
 			{/each}
 		</div>
 	</Box>

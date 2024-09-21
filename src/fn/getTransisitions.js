@@ -36,7 +36,16 @@ function getInRightTransition(stage, delay) {
 		delayActual = delay;
 	}
 	return {
-		out: { func: fly, options: { delay: stage * delayActual, duration: 200, x: '8%' } }
+		out: { func: fly, options: { delay: stage * delayActual, duration: 200, x: '20%' } }
+	};
+}
+function getInLeftTransition(stage, delay) {
+	let delayActual = 50;
+	if (delay !== undefined && typeof delay === 'number') {
+		delayActual = delay;
+	}
+	return {
+		out: { func: fly, options: { delay: stage * delayActual, duration: 200, x: '-20%' } }
 	};
 }
 
@@ -55,5 +64,6 @@ export {
 	getDesktopTransition,
 	getDownTransition,
 	getOutLeftTransition,
+	getInLeftTransition,
 	getInRightTransition
 };

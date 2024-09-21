@@ -33,6 +33,7 @@
 	let onSelected;
 	let borderRadius = lglobalStyle.borderRadius;
 	let lscreenSize = $screenSize;
+	let onscroll;
 	let toolTipText = '';
 	let borderColor = '#00000000';
 	let transitions = {};
@@ -69,6 +70,7 @@
 		backgroundColor,
 		borderRadius,
 		mouseEnter,
+		onscroll,
 		mouseLeave,
 		borderColor,
 		toolTipText,
@@ -100,6 +102,11 @@
 			e.preventDefault();
 			if (onSelected !== undefined) {
 				onSelected.call();
+			}
+		}}
+		on:scroll={(e) => {
+			if (onscroll !== undefined) {
+				onscroll.apply(null, [e]);
 			}
 		}}
 		on:mouseleave={() => {

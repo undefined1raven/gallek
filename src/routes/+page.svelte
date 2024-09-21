@@ -14,7 +14,9 @@
 	import displayName from '../stores/displayName';
 
 	$: pics = shuffleArray($collectionCache);
-
+	$: userIDsToDisplayNames = pics.map((pic) => {
+		return { userID: pic.userID, displayName: pic.displayName };
+	});
 	function onScrolled(scrollTop) {
 		const scrl = document.getElementById('scrollable');
 		if (scrl) {
@@ -165,13 +167,13 @@
 		id="scrollable"
 		style="overflow-y: scroll; overflow-x: hidden;"
 		horizontalCenter={true}
-		figmaImport={{ desktop: { top: 50, left: '50%', width: '100%', height: '95%' } }}
+		figmaImport={{ desktop: { top: 50, left: '25%', width: '50%', height: '95%' } }}
 	>
 		<div
 			style="
 display: grid;
 left: 0.5%;
-width: 49.5%;
+width: 99.5%;
 height: auto;
         top: 0%;
 position: absolute;
@@ -210,7 +212,9 @@ grid-gap: 0.5rem;
 							style="padding-left: 2%; padding-right: 2%; border-top-left-radius: 0px; border-bottom-right-radius: 0px;"
 							align="left"
 							alignPadding="2%"
-							text={`by ${collectionCacheHalf2[idx]?.displayName}`}
+							text={`by ${
+								userIDsToDisplayNames.find((elm) => elm.userID === blob.userID)?.displayName
+							}`}
 							desktopFont="12px"
 							color="#AAA"
 						/>
@@ -236,13 +240,13 @@ grid-gap: 0.5rem;
 		id="scrollable"
 		style="overflow-y: scroll; overflow-x: hidden;"
 		horizontalCenter={true}
-		figmaImport={{ desktop: { top: 50, left: '50%', width: '100%', height: '95%' } }}
+		figmaImport={{ desktop: { top: 50, left: '75%', width: '50%', height: '95%' } }}
 	>
 		<div
 			style="
         display: grid;
-        left: 50.5%;
-        width: 49%;
+        left: 0.5%;
+        width: 99%;
         top: 0%;
         height: auto;
         position: absolute;
@@ -281,7 +285,9 @@ grid-gap: 0.5rem;
 							style="padding-left: 2%; padding-right: 2%; border-top-left-radius: 0px; border-bottom-right-radius: 0px;"
 							align="left"
 							alignPadding="2%"
-							text={`by ${collectionCacheHalf2[idx]?.displayName}`}
+							text={`by ${
+								userIDsToDisplayNames.find((elm) => elm.userID === blob.userID)?.displayName
+							}`}
 							desktopFont="12px"
 							color="#AAA"
 						/>

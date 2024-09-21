@@ -5,9 +5,11 @@
 	import collectionCache from '../stores/collectionCache';
 	import Box from '../components/common/Box.svelte';
 	import GallekLogo from '../components/deco/GallekLogo.svelte';
+	import { inject } from '@vercel/analytics';
 	import { getTransition } from '../fn/getTransisitions';
 	$: hasLoaded = false;
 	onMount(() => {
+		inject();
 		const client = createClient(
 			'https://wrbgbsulbyytggffcavl.supabase.co/', ///safe. its read only on purpose
 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYmdic3VsYnl5dGdnZmZjYXZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU3ODc2ODcsImV4cCI6MjA0MTM2MzY4N30.Z8-mJtHO1aS4tm9EScbIkQape1zXa0ycC_dZc86nXfg'

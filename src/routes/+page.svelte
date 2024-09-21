@@ -10,8 +10,10 @@
 	import GallekLogoMin from '../components/deco/GallekLogoMin.svelte';
 	import Button from '../components/common/Button.svelte';
 	import Upload from '../components/deco/Upload.svelte';
+	import Label from '../components/common/Label.svelte';
+	import displayName from '../stores/displayName';
 
-	$: pics = $collectionCache;
+	$: pics = shuffleArray($collectionCache);
 
 	function onScrolled(scrollTop) {
 		const scrl = document.getElementById('scrollable');
@@ -19,6 +21,14 @@
 			console.log('scrolling', scrollTop);
 			scrl.scrollTop = scrollTop;
 		}
+	}
+
+	function shuffleArray(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
 	}
 
 	$: onScrolled(scrollTop);
@@ -117,6 +127,21 @@
 							)}; user-select: none;"
 							alt="hii"
 						/>
+						<Label
+							top="92%"
+							height="8%"
+							left="0%"
+							backdropFilter="blur(50px)"
+							width="auto"
+							style="padding-left: 2%; padding-right: 2%; border-top-left-radius: 0px; border-bottom-right-radius: 0px;"
+							align="left"
+							alignPadding="2%"
+							text={`by ${pics[idx]?.displayName}`}
+							desktopFont="12px"
+							verticalFont="10px"
+							horizontalFont="12px"
+							color="#AAA"
+						/>
 						{#if imgsLoaded[idx] === false}
 							<Box
 								transitions={getTransition(idx)}
@@ -134,6 +159,9 @@
 	</Box>
 {:else}
 	<Box
+		onscroll={(e) => {
+			scrollTop = e.target.scrollTop;
+		}}
 		id="scrollable"
 		style="overflow-y: scroll; overflow-x: hidden;"
 		horizontalCenter={true}
@@ -173,6 +201,19 @@ grid-gap: 0.5rem;
 							)}; user-select: none;"
 							alt="hii"
 						/>
+						<Label
+							top="92%"
+							height="8%"
+							left="0%"
+							backdropFilter="blur(50px)"
+							width="auto"
+							style="padding-left: 2%; padding-right: 2%; border-top-left-radius: 0px; border-bottom-right-radius: 0px;"
+							align="left"
+							alignPadding="2%"
+							text={`by ${collectionCacheHalf2[idx]?.displayName}`}
+							desktopFont="12px"
+							color="#AAA"
+						/>
 						{#if imgLoaded1[idx] === false}
 							<Box
 								transitions={getTransition(idx)}
@@ -192,6 +233,7 @@ grid-gap: 0.5rem;
 		onscroll={(e) => {
 			scrollTop = e.target.scrollTop;
 		}}
+		id="scrollable"
 		style="overflow-y: scroll; overflow-x: hidden;"
 		horizontalCenter={true}
 		figmaImport={{ desktop: { top: 50, left: '50%', width: '100%', height: '95%' } }}
@@ -229,6 +271,19 @@ grid-gap: 0.5rem;
 								'5px'
 							)}; user-select: none;"
 							alt="hii"
+						/>
+						<Label
+							top="92%"
+							height="8%"
+							left="0%"
+							backdropFilter="blur(50px)"
+							width="auto"
+							style="padding-left: 2%; padding-right: 2%; border-top-left-radius: 0px; border-bottom-right-radius: 0px;"
+							align="left"
+							alignPadding="2%"
+							text={`by ${collectionCacheHalf2[idx]?.displayName}`}
+							desktopFont="12px"
+							color="#AAA"
 						/>
 						{#if imgLoaded2[idx] === false}
 							<Box

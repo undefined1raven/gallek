@@ -8,6 +8,8 @@
 	import collectionCache from '../stores/collectionCache';
 	import GallekLogo from '../components/deco/GallekLogo.svelte';
 	import GallekLogoMin from '../components/deco/GallekLogoMin.svelte';
+	import Button from '../components/common/Button.svelte';
+	import Upload from '../components/deco/Upload.svelte';
 
 	$: pics = $collectionCache;
 
@@ -56,11 +58,31 @@
 	<GallekLogo width="42%" height="auto" left={'0%'} />
 </Box>
 
+<Box
+	transitions={getTransition(1, 400)}
+	style="justify-items: start; align-items: center; display: flex;"
+	figmaImport={{
+		desktop: { top: 6, left: '92.5%', height: 35, width: '7%' },
+		mobile: { top: 6, width: '20%', left: '78%', height: '3.5%' }
+	}}
+>
+	<Button
+		backdropFilter="blur(10px)"
+		onClick={() => {
+			window.location.href = '/login';
+		}}
+		width="100%"
+		height="100%"
+	>
+		<Upload width="50%" height="50%" />
+	</Button>
+</Box>
+
 {#if isMobile()}
 	<Box
 		style="overflow-y: scroll; overflow-x: hidden;"
 		horizontalCenter={true}
-		figmaImport={{ mobile: { top: 50, left: '50%', width: '100%', height: '100%' } }}
+		figmaImport={{ mobile: { top: 50, left: '50%', width: '100%', height: '94.5%' } }}
 	>
 		<div
 			style="

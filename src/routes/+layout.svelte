@@ -7,6 +7,7 @@
 	import GallekLogo from '../components/deco/GallekLogo.svelte';
 	import { inject } from '@vercel/analytics';
 	import { getTransition } from '../fn/getTransisitions';
+	import { touchEnd, touchMove, touchStart } from '../stores/touchGestures';
 	$: hasLoaded = false;
 	onMount(() => {
 		inject();
@@ -40,6 +41,18 @@
 </script>
 
 <slot />
+<svelte:window
+	on:touchend={(e) => {
+		touchEnd.set(e.touches);
+	}}
+	on:touchmove={(e) => {
+		touchMove.set(e.touches);
+	}}
+	on:touchstart={(e) => {
+		touchStart.set(e.touches);
+	}}
+/>
+
 {#if !hasLoaded && window.location.pathname !== '/login'}
 	<Box
 		transitions={getTransition(1, 150)}

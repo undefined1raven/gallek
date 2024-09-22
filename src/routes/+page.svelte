@@ -18,15 +18,34 @@
 	import { scale } from 'svelte/transition';
 	import HorizontalLine from '../components/common/HorizontalLine.svelte';
 	import getDateFromUnix from '../fn/getDateFromUnix';
+	import windowHash from '../stores/windowHash';
+	import { onMount } from 'svelte';
 	$: pics = shuffleArray($collectionCache);
 	$: userIDsToDisplayNames = pics.map((pic) => {
 		return { userID: pic.userID, displayName: pic.displayName };
 	});
+	$: isScrollable1Primary = true;
+	$: srcl1Height = 0;
+	$: srclHeight = 0;
+	onMount(() => {
+		const scrl1Height = document.getElementById('scrollable1')?.scrollHeight;
+		const scrlHeight = document.getElementById('scrollable')?.scrollHeight;
+		if (scrl1Height && scrlHeight) {
+			srcl1Height = scrl1Height;
+			srclHeight = scrlHeight;
+			isScrollable1Primary = scrl1Height >= scrlHeight;
+		}
+	});
+
 	function onScrolled(scrollTop) {
 		const scrl = document.getElementById('scrollable');
+		const scrl1 = document.getElementById('scrollable1');
+
 		if (scrl) {
-			console.log('scrolling', scrollTop);
 			scrl.scrollTop = scrollTop;
+		}
+		if (scrl1) {
+			scrl1.scrollTop = scrollTop;
 		}
 	}
 
@@ -65,6 +84,7 @@
 
 	function showFullScreenView(picId) {
 		selectedPicID = picId;
+		window.location.hash = 'detailedView';
 		isShowingFullScreenView = true;
 	}
 	function nextPic() {
@@ -132,7 +152,7 @@
 </Box>
 
 {#if isMobile()}
-	{#if isShowingFullScreenView}
+	{#if isShowingFullScreenView && $windowHash === '#detailedView'}
 		<Box
 			style="overflow-y: hidden; border-top-right-radius: 0px; border-top-left-radius: 0px; overflow-x: hidden; z-index: 1000;"
 			horizontalCenter={true}
@@ -316,7 +336,8 @@
 							left="0%"
 							backdropFilter="blur(50px)"
 							width="auto"
-							style="padding-left: 2%; max-height: {0.02 * window.innerHeight}px; padding-right: 2%; border-top-left-radius: 0px; border-bottom-right-radius: 0px;"
+							style="padding-left: 2%; max-height: {0.02 *
+								window.innerHeight}px; padding-right: 2%; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
 							align="left"
 							alignPadding="2%"
 							text={`by ${pics[idx]?.displayName}`}
@@ -345,7 +366,7 @@
 		onscroll={(e) => {
 			scrollTop = e.target.scrollTop;
 		}}
-		id="scrollable"
+		id="scrollable1"
 		style="overflow-y: scroll; overflow-x: hidden;"
 		horizontalCenter={true}
 		figmaImport={{ desktop: { top: 50, left: '25%', width: '50%', height: '95%' } }}
@@ -394,7 +415,8 @@ grid-gap: 0.5rem;
 							left="0%"
 							backdropFilter="blur(50px)"
 							width="auto"
-							style="padding-left: 2%; max-height: {0.02 * window.innerHeight}px; padding-right: 2%; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+							style="padding-left: 2%; max-height: {0.02 *
+								window.innerHeight}px; padding-right: 2%; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
 							align="left"
 							alignPadding="2%"
 							text={`by ${
@@ -467,7 +489,8 @@ grid-gap: 0.5rem;
 							left="0%"
 							backdropFilter="blur(50px)"
 							width="auto"
-							style="padding-left: 2%; padding-right: 2%; max-height: {0.02 * window.innerHeight}px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+							style="padding-left: 2%; padding-right: 2%; max-height: {0.02 *
+								window.innerHeight}px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
 							align="left"
 							alignPadding="2%"
 							text={`by ${

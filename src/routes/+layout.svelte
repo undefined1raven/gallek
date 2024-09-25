@@ -8,13 +8,30 @@
 	import { inject } from '@vercel/analytics';
 	import { getTransition } from '../fn/getTransisitions';
 	import { touchEnd, touchMove, touchStart } from '../stores/touchGestures';
+	import { env } from '$env/dynamic/public';
+	import { Clerk } from '@clerk/clerk-js';
+	import windowHash from '../stores/windowHash';
 	$: hasLoaded = false;
+	async function ini() {
+		const clerkPubKey = env['PUBLIC_VITE_CLERK_PUBLISHABLE_KEY'];
+		console.log(clerkPubKey, 'kru');
+		if (clerkPubKey) {
+			const clerk = new Clerk(clerkPubKey);
+			await clerk.load();
+			const signup = document.getElementById('signin');
+			if (signup) {
+				clerk.mountSignUp(signup);
+			}
+		}
+	}
+
 	onMount(() => {
 		inject();
 		const client = createClient(
 			'https://wrbgbsulbyytggffcavl.supabase.co/', ///safe. its read only on purpose
 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYmdic3VsYnl5dGdnZmZjYXZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU3ODc2ODcsImV4cCI6MjA0MTM2MzY4N30.Z8-mJtHO1aS4tm9EScbIkQape1zXa0ycC_dZc86nXfg'
 		);
+		ini();
 		fetch(domainGetter('/fileOps/getCollection'), { method: 'get' })
 			.then((r) => {
 				r.json()
@@ -66,4 +83,7 @@ background: radial-gradient(94.17% 286.26% at 90.03% 8.24%, #E2E5FF 0%, #AFB3D8 
 	>
 		<GallekLogo width="60%" height="20%" />
 	</Box>
+{/if}
+{#if $windowHash === '#beta'}
+	<Box width="90%" top="35%" id="signin" height="30%" left="5%" backgroundColor="#fff" />
 {/if}

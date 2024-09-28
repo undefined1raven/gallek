@@ -13,7 +13,7 @@
 	import windowHash from '../stores/windowHash';
 	$: hasLoaded = false;
 	async function ini() {
-		const clerkPubKey = env['PUBLIC_VITE_CLERK_PUBLISHABLE_KEY'];
+		const clerkPubKey = env['PUBLIC_VITE_CLERK_PUBLISHABLE_KEY_DEV'];
 		console.log(clerkPubKey, 'kru');
 		if (clerkPubKey) {
 			const clerk = new Clerk(clerkPubKey);

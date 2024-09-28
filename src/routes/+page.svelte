@@ -363,16 +363,24 @@
 	</Box>
 {:else}
 	<Box
-		onscroll={(e) => {
-			scrollTop = e.target.scrollTop;
-		}}
-		id="scrollable1"
+		width="100%"
+		height="94%"
+		top="5%"
+		left="0%"
+		borderRadius={$globalStyle.borderRadius}
 		style="overflow-y: scroll; overflow-x: hidden;"
-		horizontalCenter={true}
-		figmaImport={{ desktop: { top: 50, left: '25%', width: '50%', height: '95%' } }}
 	>
-		<div
-			style="
+		<Box
+			onscroll={(e) => {
+				scrollTop = e.target.scrollTop;
+			}}
+			id="scrollable1"
+			borderRadius={$globalStyle.borderRadius}
+			horizontalCenter={true}
+			figmaImport={{ desktop: { top: '0', left: '25%', width: '50%', height: 'auto' } }}
+		>
+			<div
+				style="
 display: grid;
 left: 0.5%;
 width: 99.5%;
@@ -383,74 +391,74 @@ grid-template-columns: repeat(1, 1fr);
 grid-auto-rows: auto;
 grid-gap: 0.5rem;
 "
-			class="grid"
-		>
-			{#each collectionCacheHalf1 === null ? [] : collectionCacheHalf1 as blob, idx}
-				{#if blob.preview}
-					<Box
-						onClick={() => {
-							selectedPicID = blob.id;
-							isShowingFullScreenView = true;
-						}}
-						transitions={getTransition(idx)}
-						style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
-						width="100%"
-						height="auto"
-					>
-						<img
-							on:load={() => {
-								const n = imgLoaded1;
-								n[idx] = true;
-								imgLoaded1 = n;
+				class="grid"
+			>
+				{#each collectionCacheHalf1 === null ? [] : collectionCacheHalf1 as blob, idx}
+					{#if blob.preview}
+						<Box
+							onClick={() => {
+								selectedPicID = blob.id;
+								isShowingFullScreenView = true;
 							}}
-							src={blob.preview}
-							style="width: 100%; height: auto; border-radius: {getDynamicBorderRadius(
-								'5px'
-							)}; user-select: none;"
-							alt="hii"
-						/>
-						<Label
-							top="92%"
-							height="8%"
-							left="0%"
-							backdropFilter="blur(50px)"
-							width="auto"
-							style="padding-left: 2%; max-height: {0.02 *
-								window.innerHeight}px; padding-right: 2%; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
-							align="left"
-							alignPadding="2%"
-							text={`by ${
-								userIDsToDisplayNames.find((elm) => elm.userID === blob.userID)?.displayName
-							}`}
-							desktopFont="12px"
-							color="#AAA"
-						/>
-						{#if imgLoaded1[idx] === false}
-							<Box
-								transitions={getTransition(idx)}
-								width="100%"
-								height="100%"
-								backdropFilter="blur(100px)"
-							>
-								<GallekLogoMin width="20%" height="auto" />
-							</Box>
-						{/if}
-					</Box>
-				{/if}
-			{/each}
-		</div>
-	</Box>
-	<Box
-		onscroll={(e) => {
-			scrollTop = e.target.scrollTop;
-		}}
-		id="scrollable"
-		style="overflow-y: scroll; overflow-x: hidden;"
-		horizontalCenter={true}
-		figmaImport={{ desktop: { top: 50, left: '75%', width: '50%', height: '95%' } }}
-	>
-		<div
-			style="
+							transitions={getTransition(idx)}
+							style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+							width="100%"
+							height="auto"
+						>
+							<img
+								on:load={() => {
+									const n = imgLoaded1;
+									n[idx] = true;
+									imgLoaded1 = n;
+								}}
+								src={blob.preview}
+								style="width: 100%; height: auto; border-radius: {getDynamicBorderRadius(
+									'5px'
+								)}; user-select: none;"
+								alt="hii"
+							/>
+							<Label
+								top="92%"
+								height="8%"
+								left="0%"
+								backdropFilter="blur(50px)"
+								width="auto"
+								style="padding-left: 2%; max-height: {0.02 *
+									window.innerHeight}px; padding-right: 2%; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+								align="left"
+								alignPadding="2%"
+								text={`by ${
+									userIDsToDisplayNames.find((elm) => elm.userID === blob.userID)?.displayName
+								}`}
+								desktopFont="12px"
+								color="#AAA"
+							/>
+							{#if imgLoaded1[idx] === false}
+								<Box
+									transitions={getTransition(idx)}
+									width="100%"
+									height="100%"
+									backdropFilter="blur(100px)"
+								>
+									<GallekLogoMin width="20%" height="auto" />
+								</Box>
+							{/if}
+						</Box>
+					{/if}
+				{/each}
+			</div>
+		</Box>
+		<Box
+			onscroll={(e) => {
+				scrollTop = e.target.scrollTop;
+			}}
+			id="scrollable"
+			borderRadius={$globalStyle.borderRadius}
+			horizontalCenter={true}
+			figmaImport={{ desktop: { top: '0', left: '75%', width: '50%', height: 'auto' } }}
+		>
+			<div
+				style="
         display: grid;
         left: 0.5%;
         width: 99%;
@@ -461,57 +469,58 @@ grid-gap: 0.5rem;
         grid-auto-rows: auto;
         grid-gap: 0.5rem;
     "
-			class="grid"
-		>
-			{#each collectionCacheHalf2 === null ? [] : collectionCacheHalf2 as blob, idx}
-				{#if blob.preview}
-					<Box
-						transitions={getTransition(idx)}
-						style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden;"
-						width="100%"
-						height="auto"
-					>
-						<img
-							on:load={() => {
-								const n = imgLoaded2;
-								n[idx] = true;
-								imgLoaded2 = n;
-							}}
-							src={blob.preview}
-							style="width: 100%; height: auto; border-radius: {getDynamicBorderRadius(
-								'5px'
-							)}; user-select: none;"
-							alt="hii"
-						/>
-						<Label
-							top="92%"
-							height="8%"
-							left="0%"
-							backdropFilter="blur(50px)"
-							width="auto"
-							style="padding-left: 2%; padding-right: 2%; max-height: {0.02 *
-								window.innerHeight}px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
-							align="left"
-							alignPadding="2%"
-							text={`by ${
-								userIDsToDisplayNames.find((elm) => elm.userID === blob.userID)?.displayName
-							}`}
-							desktopFont="12px"
-							color="#AAA"
-						/>
-						{#if imgLoaded2[idx] === false}
-							<Box
-								transitions={getTransition(idx)}
-								width="100%"
-								height="100%"
-								backdropFilter="blur(100px)"
-							>
-								<GallekLogoMin width="20%" height="auto" />
-							</Box>
-						{/if}
-					</Box>
-				{/if}
-			{/each}
-		</div>
+				class="grid"
+			>
+				{#each collectionCacheHalf2 === null ? [] : collectionCacheHalf2 as blob, idx}
+					{#if blob.preview}
+						<Box
+							transitions={getTransition(idx)}
+							style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden;"
+							width="100%"
+							height="auto"
+						>
+							<img
+								on:load={() => {
+									const n = imgLoaded2;
+									n[idx] = true;
+									imgLoaded2 = n;
+								}}
+								src={blob.preview}
+								style="width: 100%; height: auto; border-radius: {getDynamicBorderRadius(
+									'5px'
+								)}; user-select: none;"
+								alt="hii"
+							/>
+							<Label
+								top="92%"
+								height="8%"
+								left="0%"
+								backdropFilter="blur(50px)"
+								width="auto"
+								style="padding-left: 2%; padding-right: 2%; max-height: {0.02 *
+									window.innerHeight}px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+								align="left"
+								alignPadding="2%"
+								text={`by ${
+									userIDsToDisplayNames.find((elm) => elm.userID === blob.userID)?.displayName
+								}`}
+								desktopFont="12px"
+								color="#AAA"
+							/>
+							{#if imgLoaded2[idx] === false}
+								<Box
+									transitions={getTransition(idx)}
+									width="100%"
+									height="100%"
+									backdropFilter="blur(100px)"
+								>
+									<GallekLogoMin width="20%" height="auto" />
+								</Box>
+							{/if}
+						</Box>
+					{/if}
+				{/each}
+			</div>
+		</Box>
 	</Box>
 {/if}

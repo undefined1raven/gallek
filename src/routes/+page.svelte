@@ -120,6 +120,14 @@
 	$: fullScreenViewScale = 1; ///min - 1, max - 7
 </script>
 
+<svelte:window
+	on:keyup={(e) => {
+		if (e.key === 'Escape') {
+			isShowingFullScreenView = false;
+		}
+	}}
+/>
+
 <Box
 	transitions={getTransition(1, 400)}
 	style="justify-items: start; align-items: center; display: flex;"
@@ -259,7 +267,7 @@
 				color="#000"
 				borderColor="#000"
 			/>
-			<Box width="54%" height="13%" left="13.5%" top="86%" backgroundColor="#FFFFFF00">
+			<Box width="54%" height="13%" left="13.5%" top="86%" backgroundColor="FFFFFF00">
 				<Label
 					text={`Author: ${
 						userIDsToDisplayNames.find((elm) => elm.userID === selectedPicID.userID)?.displayName
@@ -274,7 +282,7 @@
 					desktopFont="12px"
 				/>
 			</Box>
-			<Box width="54%" height="13%" left="13.5%" top="90%" backgroundColor="#FFFFFF00">
+			<Box width="54%" height="13%" left="13.5%" top="90%" backgroundColor="FFFFFF00">
 				<Label
 					text={`Uploaded: ${getDateFromUnix(selectedPicID.tx)}`}
 					align="left"
@@ -362,6 +370,90 @@
 		</div>
 	</Box>
 {:else}
+	{#if isShowingFullScreenView && $windowHash === '#detailedView'}
+		<Box
+			width="100%"
+			left="0%"
+			top="5%"
+			style="z-index: 50;"
+			backdropFilter="blur(150px)"
+			backgroundColor="#FFFFFF30"
+			height="94%"
+		>
+			<Box width="73.541666667%" left="0%" height="100%">
+				<img
+					src={selectedPicID ? selectedPicID.preview : ''}
+					width="100%"
+					style="object-fit: scale-down; z-index: 10;"
+					height="100%"
+					alt="hii"
+				/>
+				<Box
+					width="100%"
+					height="100%"
+					style="
+					opacity: 0.2;
+			background: radial-gradient(circle, transparent 20%, #EEEFFF 20%, #EEEFFF 80%, transparent 80%, transparent) 0% 0% / 64px 64px, radial-gradient(circle, transparent 20%, #EEEFFF 20%, #EEEFFF 80%, transparent 80%, transparent) 32px 32px / 64px 64px, linear-gradient({$globalStyle.activeColor} 1.5px, transparent 1.5px) 0px -0.75px / 32px 32px, linear-gradient(90deg, {$globalStyle.activeColor} 1.5px, #EEEFFF 1.5px) -0.75px 0px / 32px 32px #EEEFFF;
+		background-size: 64px 64px, 64px 64px, 32px 32px, 32px 32px;
+		background-color: #EEEFFF;"
+				/>
+			</Box>
+			<Box width="24.114583333%" left="75%" height="100%">
+				<Box
+					width="100%"
+					height="99%"
+					style="align-items: start; justify-content: start; flex-flow: column; z-index: 100; overflow: scroll; position: relative;"
+				>
+					<Box left="0%" width="100%" style="position: relative;">
+						<Label
+							desktopFont={$globalStyle.mediumDesktopFont}
+							color="#000000"
+							align="right"
+							width="90%"
+							style="position: relative; padding: 2%; margin-right: 1%;"
+							text={'Author: '}
+						/>
+						<Label
+							desktopFont={$globalStyle.mediumDesktopFont}
+							color="#000000"
+							width="90%"
+							align="left"
+							style="text-align: start; position: relative; padding: 2%; margin-left: 1%;"
+							text={userIDsToDisplayNames.find((elm) => elm.userID === selectedPicID.userID)
+								?.displayName}
+						/>
+					</Box>
+					<Box left="0%" width="100%" style="margin-top: 2%; position: relative;">
+						<Label
+							desktopFont={$globalStyle.mediumDesktopFont}
+							color="#000000"
+							align="right"
+							width="90%"
+							style="position: relative; padding: 2%; margin-right: 1%;"
+							text={'Uploaded at: '}
+						/>
+						<Label
+							desktopFont={$globalStyle.mediumDesktopFont}
+							color="#000000"
+							width="90%"
+							align="left"
+							style="position: relative; padding: 2%; margin-left: 1%;"
+							text={`${getDateFromUnix(selectedPicID.tx)}`}
+						/>
+					</Box>
+				</Box>
+				<!-- <Box
+					width="100%"
+					height="100%"
+					style="
+					opacity: 0.2;
+			background: radial-gradient(circle, transparent 20%, #EEEFFF 20%, #EEEFFF 80%, transparent 80%, transparent) 0% 0% / 64px 64px, radial-gradient(circle, transparent 20%, #EEEFFF 20%, #EEEFFF 80%, transparent 80%, transparent) 32px 32px / 64px 64px, linear-gradient({$globalStyle.activeColor} 1.5px, transparent 1.5px) 0px -0.75px / 32px 32px, linear-gradient(90deg, {$globalStyle.activeColor} 1.5px, #EEEFFF 1.5px) -0.75px 0px / 32px 32px #EEEFFF;
+		background-size: 64px 64px, 64px 64px, 32px 32px, 32px 32px;
+		background-color: #EEEFFF;"
+				/> -->
+			</Box>
+		</Box>
+	{/if}
 	<Box
 		width="100%"
 		height="94%"
@@ -397,8 +489,7 @@ grid-gap: 0.5rem;
 					{#if blob.preview}
 						<Box
 							onClick={() => {
-								selectedPicID = blob.id;
-								isShowingFullScreenView = true;
+								showFullScreenView(blob);
 							}}
 							transitions={getTransition(idx)}
 							style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
@@ -478,6 +569,9 @@ grid-gap: 0.5rem;
 							style="position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden;"
 							width="100%"
 							height="auto"
+							onClick={() => {
+								showFullScreenView(blob);
+							}}
 						>
 							<img
 								on:load={() => {
